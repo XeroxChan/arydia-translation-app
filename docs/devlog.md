@@ -179,6 +179,7 @@ http://localhost:3000
 
 Next step:
 
-- Build the first `/quick-start` sample page.
-- Use structured data instead of one giant HTML file.
-- Create reusable components for bilingual English / Traditional Chinese display.
+- Clean up the Quick Start workflow now that the first sample viewer is working.
+- Add a review summary to `/quick-start` showing how many guide items are draft, reviewed, and approved.
+- Keep adding real guide content only in small reviewed chunks.
+- Check glossary terms before adding each new translated section.
