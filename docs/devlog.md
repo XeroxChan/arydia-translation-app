@@ -136,6 +136,17 @@ http://localhost:3000
 - Added a result count so I can see how many terms match the current search.
 - Split the glossary page into a route page and a reusable client component.
 
+### Translation status milestone
+
+- Added translation status tracking for guide content.
+- Created three statuses:
+  - `draft`
+  - `reviewed`
+  - `approved`
+- Added a reusable `StatusBadge` component.
+- Updated `BilingualPair` so each English / Traditional Chinese pair shows its translation status.
+- This will help separate rough AI-assisted translations from reviewed and approved translations later.
+
 Next step:
 
 - Build the first `/quick-start` sample page.
