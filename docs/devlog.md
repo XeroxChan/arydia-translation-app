@@ -81,6 +81,7 @@ git add .
 git commit -m "message"
 git push
 ```
+
 ### Theme update
 
 - Applied the first Arydia-inspired dark parchment theme to the glossary page.
