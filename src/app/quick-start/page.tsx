@@ -1,5 +1,4 @@
-import GuideSection from "@/components/GuideSection";
-import SectionNav from "@/components/SectionNav";
+import GuideViewer from "@/components/GuideViewer";
 import { quickStartGuide } from "@/data/quickStartGuide";
 
 export default function QuickStartPage() {
@@ -21,13 +20,7 @@ export default function QuickStartPage() {
           </p>
         </section>
 
-        <SectionNav sections={quickStartGuide} />
-
-        <div className="rounded-xl border border-[#a9762f]/50 bg-[#2a241d] p-5 shadow-lg">
-          {quickStartGuide.map((section) => (
-            <GuideSection key={section.id} section={section} />
-          ))}
-        </div>
+        <GuideViewer sections={quickStartGuide} />
       </div>
     </main>
   );
