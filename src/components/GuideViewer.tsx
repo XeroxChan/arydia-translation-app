@@ -8,7 +8,7 @@ import type {
   GuideBlock,
   GuideSection as GuideSectionType,
   TranslationStatus,
-} from "@/data/quickStartGuide";
+} from "@/data/types";
 
 type StatusFilter = "all" | TranslationStatus;
 

@@ -1,4 +1,4 @@
-import type { GuideSection } from "@/data/quickStartGuide";
+import type { GuideSection } from "@/data/types";
 
 type SectionNavProps = {
   sections: GuideSection[];

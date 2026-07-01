@@ -1,5 +1,5 @@
 import StatusBadge from "@/components/StatusBadge";
-import type { TranslationStatus } from "@/data/quickStartGuide";
+import type { TranslationStatus } from "@/data/types";
 
 export type DisplayMode = "side-by-side" | "zh-only" | "en-only";
 

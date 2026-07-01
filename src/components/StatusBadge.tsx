@@ -1,4 +1,4 @@
-import type { TranslationStatus } from "@/data/quickStartGuide";
+import type { TranslationStatus } from "@/data/types";
 
 type StatusBadgeProps = {
   status: TranslationStatus;

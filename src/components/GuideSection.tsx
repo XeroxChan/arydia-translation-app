@@ -1,5 +1,5 @@
 import BilingualPair, { type DisplayMode } from "@/components/BilingualPair";
-import type { GuideSection as GuideSectionType } from "@/data/quickStartGuide";
+import type { GuideSection as GuideSectionType } from "@/data/types";
 
 type GuideSectionProps = {
   section: GuideSectionType;
