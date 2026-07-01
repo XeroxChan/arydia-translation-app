@@ -88,6 +88,22 @@ git push
 - Used warm parchment text, brass/gold headings, dark panel backgrounds, and bordered tag chips.
 - Decided to keep the styling simple for now and polish later after more pages are built.
 
+### Quick Start Guide sample milestone
+
+- Created the first `/quick-start` route.
+- Added `src/data/quickStartGuide.ts` to store guide content as structured TypeScript data.
+- Created reusable components:
+  - `BilingualPair.tsx`
+  - `GuideSection.tsx`
+- Built a sample bilingual guide layout with English and Traditional Chinese side by side.
+- Fixed an error where the `GuideSection` component code was accidentally placed inside `src/app/quick-start/page.tsx`.
+- Learned that route pages and reusable components should be kept separate.
+
+Working route:
+
+```text
+http://localhost:3000/quick-start
+
 Next step:
 
 - Build the first `/quick-start` sample page.
