@@ -128,6 +128,14 @@ http://localhost:3000
 - Updated `src/app/layout.tsx` so the header appears on all pages.
 - Added active page highlighting using `usePathname`.
 
+### Glossary search milestone
+
+- Created a reusable `GlossaryTable` component.
+- Added glossary search by English, Traditional Chinese, notes, and tags.
+- Added tag filter buttons.
+- Added a result count so I can see how many terms match the current search.
+- Split the glossary page into a route page and a reusable client component.
+
 Next step:
 
 - Build the first `/quick-start` sample page.
