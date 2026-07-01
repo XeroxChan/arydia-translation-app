@@ -19,6 +19,11 @@ const navItems = [
     zh: "快速指南",
     href: "/quick-start",
   },
+  {
+    label: "Cards",
+    zh: "卡牌",
+    href: "/cards",
+  },
 ];
 
 export default function AppHeader() {

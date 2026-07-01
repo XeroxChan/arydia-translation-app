@@ -15,6 +15,13 @@ const cards = [
     description:
       "Read sample bilingual guide sections side by side during development.",
   },
+  {
+    title: "Card Library",
+    zh: "卡牌索引",
+    href: "/cards",
+    description:
+      "Browse placeholder card entries using the real Arydia card type structure.",
+  },
 ];
 
 export default function HomePage() {
@@ -37,7 +44,7 @@ export default function HomePage() {
           </p>
         </section>
 
-        <section className="grid gap-4 md:grid-cols-2">
+        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {cards.map((card) => (
             <Link
               key={card.href}
