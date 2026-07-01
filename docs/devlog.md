@@ -103,6 +103,7 @@ Working route:
 
 ```text
 http://localhost:3000/quick-start
+```
 
 ### Homepage milestone
 
@@ -118,7 +119,7 @@ Working route:
 
 ```text
 http://localhost:3000
-
+```
 
 Next step:
 
