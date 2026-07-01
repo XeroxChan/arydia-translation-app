@@ -81,7 +81,11 @@ git add .
 git commit -m "message"
 git push
 ```
+### Theme update
 
+- Applied the first Arydia-inspired dark parchment theme to the glossary page.
+- Used warm parchment text, brass/gold headings, dark panel backgrounds, and bordered tag chips.
+- Decided to keep the styling simple for now and polish later after more pages are built.
 
 Next step:
 
