@@ -39,7 +39,10 @@ function blockMatchesStatus(block: GuideBlock, status: StatusFilter) {
   return block.items.some((item) => item.status === status);
 }
 
-function filterBlock(block: GuideBlock, status: StatusFilter): GuideBlock | null {
+function filterBlockByStatus(
+  block: GuideBlock,
+  status: StatusFilter,
+): GuideBlock | null {
   if (status === "all") return block;
 
   if (block.type === "paragraph") {
@@ -58,16 +61,72 @@ function filterBlock(block: GuideBlock, status: StatusFilter): GuideBlock | null
   };
 }
 
+function blockMatchesSearch(block: GuideBlock, search: string) {
+  if (search === "") return true;
+
+  if (block.type === "paragraph") {
+    return `${block.en} ${block.zh}`.toLowerCase().includes(search);
+  }
+
+  return block.items.some((item) =>
+    `${item.en} ${item.zh}`.toLowerCase().includes(search),
+  );
+}
+
+function filterBlockBySearch(
+  block: GuideBlock,
+  search: string,
+): GuideBlock | null {
+  if (search === "") return block;
+
+  if (block.type === "paragraph") {
+    return blockMatchesSearch(block, search) ? block : null;
+  }
+
+  const filteredItems = block.items.filter((item) =>
+    `${item.en} ${item.zh}`.toLowerCase().includes(search),
+  );
+
+  if (filteredItems.length === 0) {
+    return null;
+  }
+
+  return {
+    ...block,
+    items: filteredItems,
+  };
+}
+
 export default function GuideViewer({ sections }: GuideViewerProps) {
   const [activeStatus, setActiveStatus] = useState<StatusFilter>("all");
   const [displayMode, setDisplayMode] = useState<DisplayMode>("side-by-side");
+  const [search, setSearch] = useState("");
+
+  const normalisedSearch = search.trim().toLowerCase();
 
   const filteredSections = useMemo(() => {
     return sections
       .map((section) => {
+        const sectionTitleMatches =
+          normalisedSearch === "" ||
+          `${section.titleEn} ${section.titleZh}`
+            .toLowerCase()
+            .includes(normalisedSearch);
+
         const filteredBlocks = section.blocks
           .filter((block) => blockMatchesStatus(block, activeStatus))
-          .map((block) => filterBlock(block, activeStatus))
+          .map((block) => filterBlockByStatus(block, activeStatus))
+          .filter((block): block is GuideBlock => block !== null)
+          .filter((block) =>
+            sectionTitleMatches
+              ? true
+              : blockMatchesSearch(block, normalisedSearch),
+          )
+          .map((block) =>
+            sectionTitleMatches
+              ? block
+              : filterBlockBySearch(block, normalisedSearch),
+          )
           .filter((block): block is GuideBlock => block !== null);
 
         return {
@@ -76,10 +135,28 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
         };
       })
       .filter((section) => section.blocks.length > 0);
-  }, [sections, activeStatus]);
+  }, [sections, activeStatus, normalisedSearch]);
 
   return (
     <div className="space-y-8">
+      <div className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+        <label
+          htmlFor="guide-search"
+          className="mb-2 block text-xs uppercase tracking-[0.25em] text-[#b9a988]"
+        >
+          Search Guide
+        </label>
+
+        <input
+          id="guide-search"
+          type="text"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Search English, 中文, section titles..."
+          className="w-full rounded-md border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-[#ece3d2] placeholder:text-[#b9a988]/60 focus:border-[#c98f3b] focus:outline-none"
+        />
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
           <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
@@ -153,7 +230,7 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
           ))
         ) : (
           <p className="text-center text-[#b9a988]">
-            No guide content matches this status.
+            No guide content matches your current search or status filter.
           </p>
         )}
       </div>
