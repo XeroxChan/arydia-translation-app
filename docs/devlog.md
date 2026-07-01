@@ -159,6 +159,16 @@ http://localhost:3000
 - This helps separate rough translations from reviewed and approved translations.
 - Moved guide rendering logic out of the route page and into a reusable client component.
 
+### Quick Start display mode milestone
+
+- Added display mode controls for the Quick Start Guide.
+- The guide can now show:
+  - side-by-side English / Traditional Chinese
+  - Traditional Chinese only
+  - English only
+- Updated `BilingualPair`, `GuideSection`, and `GuideViewer` to support display modes.
+- This makes the app more practical for iPad gameplay, where I may want a cleaner single-language view.
+
 Next step:
 
 - Build the first `/quick-start` sample page.
