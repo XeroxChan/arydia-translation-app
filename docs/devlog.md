@@ -2,6 +2,38 @@
 
 ## 2026-07-01
 
+### Next step
+
+Tomorrow, build the safe public/private data workflow:
+
+1. Keep public repo data as demo/placeholder content.
+2. Prepare a clean structure for private local translated content.
+3. Create or plan a loader pattern so the public app can use demo data while the local private version can later use ignored private files.
+4. After that, start translating the Quick Start Guide first, storing real translated content only in private ignored files.
+
+### Naming, glossary, and private content safeguard milestone
+
+- Renamed the app identity away from “Translation Helper / 翻譯助手” toward a database-style name: `Arydia: The Paths We Dare Tread 中英資料庫`.
+- Cleaned up glossary thinking around duplicated-looking terms:
+  - Kept separate concepts such as `Foe` / `Foe cards` and `Point of Interest` / `Point of Interest cards`.
+  - Confirmed there is no separate `AI Card` card type in the current Arydia component structure.
+  - Chose `職業規則卡` for `path-rules-cards`.
+- Confirmed the long-term goal of the app:
+  - store English source content,
+  - provide accurate Traditional Chinese translations,
+  - keep glossary terms consistent,
+  - support cards, maps, Quick Start Guide, rulebooks, and other gameplay reference material.
+- Decided the future public GitHub repository should be portfolio-safe and should not include full copyrighted Arydia rulebook text, card text, map text, scans, OCR output, or full translations.
+- Added private content storage safeguards:
+  - updated `.gitignore`,
+  - added `private-data/`,
+  - added `src/data/private/`,
+  - added private data README files,
+  - added `docs/content-notice.md`,
+  - added README copyright/content notice.
+- Tested the ignore rule by creating a fake private file and confirming Git did not track it.
+- Committed and pushed the private content storage safeguard milestone.
+
 ### Naming and glossary cleanup milestone
 
 - Renamed the app to Arydia: The Paths We Dare Tread 中英資料庫.
