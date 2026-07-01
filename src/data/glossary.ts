@@ -16,7 +16,7 @@ export interface GlossaryTerm {
 }
 
 /**
- * A collection of glossary terms for the Arydia translation helper.
+ * A collection of glossary terms for the Arydia, the Paths We Dare Tread bilingual database.
  * In a real application, this data might come from a database or a CMS.
  */
 export const glossaryData: GlossaryTerm[] = [

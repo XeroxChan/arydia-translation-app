@@ -30,11 +30,11 @@ export default function HomePage() {
       <div className="mx-auto max-w-5xl">
         <section className="mb-10 rounded-xl border border-[#a9762f]/50 bg-[#2a241d] p-6 shadow-lg">
           <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
-            Arydia Translation Helper
+            Arydia, the Paths We Dare Tread Bilingual Database
           </p>
 
           <h1 className="mb-4 text-4xl font-bold text-[#c98f3b]">
-            Arydia 雙語翻譯助手
+            Arydia, the Paths We Dare Tread 中英資料庫
           </h1>
 
           <p className="max-w-3xl leading-7 text-[#b9a988]">

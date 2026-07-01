@@ -3,9 +3,9 @@ import AppHeader from "@/components/AppHeader";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Arydia Translation Helper",
+  title: "Arydia, the Paths We Dare Tread Bilingual Database",
   description:
-    "A private bilingual translation helper for Arydia in English and Traditional Chinese.",
+    "A private bilingual database for Arydia in English and Traditional Chinese.",
 };
 
 export default function RootLayout({

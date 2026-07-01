@@ -34,10 +34,10 @@ export default function AppHeader() {
       <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Link href="/" className="group">
           <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
-            Arydia
+            Arydia, the Paths We Dare Tread
           </p>
           <h1 className="text-lg font-bold text-[#c98f3b] group-hover:text-[#ece3d2]">
-            雙語翻譯助手
+            中英資料庫
           </h1>
         </Link>
 
