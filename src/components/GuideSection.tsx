@@ -7,7 +7,7 @@ type GuideSectionProps = {
 
 export default function GuideSection({ section }: GuideSectionProps) {
   return (
-    <section id={section.id} className="mb-10">
+    <section id={section.id} className="mb-10 scroll-mt-24">
       <p className="mb-2 text-xs uppercase tracking-[0.2em] text-[#b9a988]">
         Page {section.page}
       </p>
@@ -24,6 +24,7 @@ export default function GuideSection({ section }: GuideSectionProps) {
                 key={block.id}
                 en={block.en}
                 zh={block.zh}
+                status={block.status}
               />
             );
           }
@@ -35,6 +36,7 @@ export default function GuideSection({ section }: GuideSectionProps) {
                   key={item.id}
                   en={item.en}
                   zh={item.zh}
+                  status={item.status}
                 />
               ))}
             </div>
