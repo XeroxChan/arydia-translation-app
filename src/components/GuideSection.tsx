@@ -1,11 +1,15 @@
-import BilingualPair from "@/components/BilingualPair";
+import BilingualPair, { type DisplayMode } from "@/components/BilingualPair";
 import type { GuideSection as GuideSectionType } from "@/data/quickStartGuide";
 
 type GuideSectionProps = {
   section: GuideSectionType;
+  displayMode: DisplayMode;
 };
 
-export default function GuideSection({ section }: GuideSectionProps) {
+export default function GuideSection({
+  section,
+  displayMode,
+}: GuideSectionProps) {
   return (
     <section id={section.id} className="mb-10 scroll-mt-24">
       <p className="mb-2 text-xs uppercase tracking-[0.2em] text-[#b9a988]">
@@ -25,6 +29,7 @@ export default function GuideSection({ section }: GuideSectionProps) {
                 en={block.en}
                 zh={block.zh}
                 status={block.status}
+                displayMode={displayMode}
               />
             );
           }
@@ -37,6 +42,7 @@ export default function GuideSection({ section }: GuideSectionProps) {
                   en={item.en}
                   zh={item.zh}
                   status={item.status}
+                  displayMode={displayMode}
                 />
               ))}
             </div>
