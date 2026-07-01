@@ -32,3 +32,11 @@ This app focuses on:
 
 This is a private fan-made learning project.  
 Copyrighted Arydia text, scans, and translated content are not intended for public distribution.
+
+## Content and Copyright Notice
+
+This repository is intended to showcase the app structure, bilingual database design, UI, glossary system, and translation workflow.
+
+It does not include full copyrighted Arydia rulebook text, card text, map text, scans, OCR output, or full translations.
+
+Private translated content should be stored locally in ignored files such as `private-data/*.private.json` or `src/data/private/*.private.ts`.

@@ -39,3 +39,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Private Arydia content
+# Do not commit copyrighted rulebook/card/map text, scans, PDFs, OCR output, or full translations.
+private-data/*
+!private-data/README.md
+!private-data/.gitkeep
+
+src/data/private/*
+!src/data/private/README.md
+!src/data/private/.gitkeep
+
+*.private.ts
+*.private.json
+*.private.md
+*.private.txt
