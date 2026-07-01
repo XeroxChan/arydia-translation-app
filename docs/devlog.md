@@ -2,6 +2,16 @@
 
 ## 2026-07-01
 
+### Card library foundation milestone
+
+- Added a `/cards` route for the Arydia card translation index.
+- Added placeholder card entries using safe non-copyrighted sample text.
+- Added search across card titles, subtitles, body blocks, tags, codes, and card type metadata.
+- Updated the card model to use real Arydia card types instead of generic categories.
+- Added flexible bilingual card text blocks so different card structures can be handled later.
+- Locked real card type translations in the glossary.
+- Added Cards 卡牌 navigation to the header and homepage.
+
 ### Quick Start search and review summary milestone
 
 - Added search to the Quick Start Guide viewer.
