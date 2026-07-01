@@ -169,6 +169,14 @@ http://localhost:3000
 - Updated `BilingualPair`, `GuideSection`, and `GuideViewer` to support display modes.
 - This makes the app more practical for iPad gameplay, where I may want a cleaner single-language view.
 
+### Quick Start search milestone
+
+- Added search to the Quick Start Guide viewer.
+- Search works across section titles, English text, and Traditional Chinese text.
+- Search combines with the existing translation status filter.
+- Search also works together with the display mode toggle.
+- This prepares the guide for adding more real translated sections later.
+
 Next step:
 
 - Build the first `/quick-start` sample page.
