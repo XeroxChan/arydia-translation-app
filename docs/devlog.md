@@ -147,6 +147,18 @@ http://localhost:3000
 - Updated `BilingualPair` so each English / Traditional Chinese pair shows its translation status.
 - This will help separate rough AI-assisted translations from reviewed and approved translations later.
 
+### Quick Start status filter milestone
+
+- Created a reusable `GuideViewer` component.
+- Added status filtering for Quick Start Guide content.
+- The guide can now filter content by:
+  - `all`
+  - `draft`
+  - `reviewed`
+  - `approved`
+- This helps separate rough translations from reviewed and approved translations.
+- Moved guide rendering logic out of the route page and into a reusable client component.
+
 Next step:
 
 - Build the first `/quick-start` sample page.
