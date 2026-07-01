@@ -40,7 +40,7 @@ export const cardLibrary: ArydiaCardEntry[] = [
     notes:
       "Private placeholder only. Do not paste full copyrighted Arydia card text into the public repository.",
     tags: ["combat", "foe", "placeholder"],
-    glossaryTermIds: ["foe", "boss", "ai-card", "foe-cards"],
+    glossaryTermIds: ["foe", "boss", "foe-cards"],
   },
   {
     id: "sample-key-card",

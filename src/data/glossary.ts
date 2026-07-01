@@ -91,29 +91,8 @@ export const glossaryData: GlossaryTerm[] = [
     tags: ["Combat", "Enemy"],
   },
   {
-    id: "ai-card",
-    en: "AI Card",
-    zh: "AI 行動卡",
-    description: "控制敵人行動",
-    tags: ["Combat", "Cards"],
-  },
-  {
-    id: "event-card",
-    en: "Event Card",
-    zh: "事件卡",
-    description: "編號 EVT-",
-    tags: ["Cards"],
-  },
-  {
-    id: "job-card",
-    en: "Job Card",
-    zh: "任務卡",
-    description: "編號 JOB-",
-    tags: ["Cards"],
-  },
-  {
-    id: "npc-card",
-    en: "NPC Card",
+    id: "npc-cards",
+    en: "NPC Cards",
     zh: "NPC 卡",
     description: "編號 NPC-",
     tags: ["Cards", "NPC"],
@@ -229,12 +208,6 @@ export const glossaryData: GlossaryTerm[] = [
     zh: "關鍵字互動",
     description: "與 NPC 對話系統",
     tags: ["Rules", "NPC", "Dialogue"],
-  },  {
-    id: "npc-cards",
-    en: "NPC cards",
-    zh: "NPC 卡（非玩家角色）",
-    description: "編號 NPC-",
-    tags: ["Cards", "NPC"],
   },
   {
     id: "job-cards",
@@ -316,7 +289,7 @@ export const glossaryData: GlossaryTerm[] = [
   {
     id: "path-rules-cards",
     en: "Rules cards",
-    zh: "規則卡",
+    zh: "職業規則卡",
     description: "每路徑 17 張，共 102 張",
     tags: ["Cards", "Rules", "Path"],
   },
