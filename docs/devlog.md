@@ -2,6 +2,13 @@
 
 ## 2026-07-01
 
+### Naming and glossary cleanup milestone
+
+- Renamed the app to Arydia: The Paths We Dare Tread 中英資料庫.
+- Removed old “translation helper / 翻譯助手” wording from the app identity.
+- Cleaned up glossary card terms and aligned card type translations with the real Arydia component types.
+- Confirmed that the card library uses real Arydia card types rather than generic placeholder categories.
+
 ### Card library type refactor milestone
 
 - Locked the real Arydia card type translations in the glossary.
