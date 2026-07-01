@@ -121,6 +121,13 @@ Working route:
 http://localhost:3000
 ```
 
+### Shared navigation milestone
+
+- Added a reusable `AppHeader` component.
+- Added navigation links for Home, Glossary, and Quick Start Guide.
+- Updated `src/app/layout.tsx` so the header appears on all pages.
+- Added active page highlighting using `usePathname`.
+
 Next step:
 
 - Build the first `/quick-start` sample page.
