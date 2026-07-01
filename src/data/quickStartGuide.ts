@@ -60,5 +60,34 @@ export const quickStartGuide: GuideSection[] = [
         ],
       },
     ],
+  },  {
+    id: "sample-setup",
+    page: 2,
+    titleEn: "Setup",
+    titleZh: "設置",
+    blocks: [
+      {
+        id: "setup-intro",
+        type: "paragraph",
+        en: "This is a sample setup section. Later, real guide content can be added here after translation review.",
+        zh: "這是一段設置章節範例。之後可以在翻譯審核後，將真正的指南內容加入這裡。",
+      },
+      {
+        id: "setup-reminders",
+        type: "list",
+        items: [
+          {
+            id: "setup-small-batches",
+            en: "Add content in small batches.",
+            zh: "以小批量方式加入內容。",
+          },
+          {
+            id: "setup-review",
+            en: "Review each translation before marking it as final.",
+            zh: "每段翻譯都應先檢查，再標記為最終版本。",
+          },
+        ],
+      },
+    ],
   },
 ];
