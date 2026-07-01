@@ -1,35 +1,13 @@
-export type TranslationStatus = "draft" | "reviewed" | "approved";
+import type { GuideSection as GuideSectionType } from "@/data/types";
 
-export type BilingualListItem = {
-  id: string;
-  en: string;
-  zh: string;
-  status: TranslationStatus;
-};
+export type {
+  BilingualListItem,
+  GuideBlock,
+  GuideSection,
+  TranslationStatus,
+} from "@/data/types";
 
-export type GuideBlock =
-  | {
-      id: string;
-      type: "paragraph";
-      en: string;
-      zh: string;
-      status: TranslationStatus;
-    }
-  | {
-      id: string;
-      type: "list";
-      items: BilingualListItem[];
-    };
-
-export type GuideSection = {
-  id: string;
-  page: number;
-  titleEn: string;
-  titleZh: string;
-  blocks: GuideBlock[];
-};
-
-export const quickStartGuide: GuideSection[] = [
+export const quickStartGuide: GuideSectionType[] = [
   {
     id: "sample-welcome",
     page: 1,
