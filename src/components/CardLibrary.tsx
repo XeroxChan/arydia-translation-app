@@ -5,6 +5,7 @@ import { cardTypeDefinitions, cardTypeLabels } from "@/data/cardTypes";
 import type {
   ArydiaCardEntry,
   ArydiaCardType,
+  BilingualField,
   TranslationStatus,
 } from "@/data/types";
 
@@ -13,6 +14,7 @@ type CardLibraryProps = {
 };
 
 type CardTypeFilter = "all" | ArydiaCardType;
+type DisplayMode = "side-by-side" | "zh-only" | "en-only";
 
 const cardTypeOptions: { value: CardTypeFilter; label: string }[] = [
   { value: "all", label: "All 全部" },
@@ -20,6 +22,12 @@ const cardTypeOptions: { value: CardTypeFilter; label: string }[] = [
     value: definition.type,
     label: `${definition.code} · ${definition.en} ${definition.zh}`,
   })),
+];
+
+const displayOptions: { value: DisplayMode; label: string }[] = [
+  { value: "side-by-side", label: "Side by side 對照" },
+  { value: "zh-only", label: "中文 only" },
+  { value: "en-only", label: "English only" },
 ];
 
 const statusLabels: Record<TranslationStatus, string> = {
@@ -105,9 +113,81 @@ function countStatuses(cards: ArydiaCardEntry[]) {
   return counts;
 }
 
+function BilingualCardField({
+  field,
+  label,
+  displayMode,
+}: {
+  field: BilingualField;
+  label: string;
+  displayMode: DisplayMode;
+}) {
+  if (displayMode === "en-only") {
+    return (
+      <div className="rounded-lg border border-[#a9762f]/40 bg-[#1c1a17] p-4">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            {label}
+          </p>
+          <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
+            {statusLabels[field.status]}
+          </span>
+        </div>
+        <p className="text-sm leading-6 text-[#ece3d2]">{field.en}</p>
+      </div>
+    );
+  }
+
+  if (displayMode === "zh-only") {
+    return (
+      <div className="rounded-lg border border-[#a9762f]/40 bg-[#3a2b1c]/60 p-4">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            繁體中文
+          </p>
+          <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
+            {statusLabels[field.status]}
+          </span>
+        </div>
+        <p className="text-sm leading-6 text-[#fff6df]">{field.zh}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      <div className="rounded-lg border border-[#a9762f]/40 bg-[#1c1a17] p-4">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            {label}
+          </p>
+          <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
+            {statusLabels[field.status]}
+          </span>
+        </div>
+        <p className="text-sm leading-6 text-[#ece3d2]">{field.en}</p>
+      </div>
+
+      <div className="rounded-lg border border-[#a9762f]/40 bg-[#3a2b1c]/60 p-4">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            繁體中文
+          </p>
+          <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
+            {statusLabels[field.status]}
+          </span>
+        </div>
+        <p className="text-sm leading-6 text-[#fff6df]">{field.zh}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function CardLibrary({ cards }: CardLibraryProps) {
   const [search, setSearch] = useState("");
   const [activeType, setActiveType] = useState<CardTypeFilter>("all");
+  const [displayMode, setDisplayMode] =
+    useState<DisplayMode>("side-by-side");
 
   const normalisedSearch = search.trim().toLowerCase();
 
@@ -156,36 +236,70 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
         />
       </section>
 
-      <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
-        <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
-          Card Type Filter 卡牌類型篩選
-        </p>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            Card Type Filter 卡牌類型篩選
+          </p>
 
-        <div className="flex flex-wrap gap-2">
-          {cardTypeOptions.map((option) => {
-            const isActive = option.value === activeType;
+          <div className="flex flex-wrap gap-2">
+            {cardTypeOptions.map((option) => {
+              const isActive = option.value === activeType;
 
-            return (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => setActiveType(option.value)}
-                className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                  isActive
-                    ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
-                    : "border-[#a9762f]/30 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
-                }`}
-              >
-                {option.label}
-              </button>
-            );
-          })}
-        </div>
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setActiveType(option.value)}
+                  className={`rounded-full border px-3 py-1.5 text-sm transition ${
+                    isActive
+                      ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
+                      : "border-[#a9762f]/30 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
 
-        <p className="mt-4 text-sm text-[#b9a988]">
-          Showing {filteredCards.length} of {cards.length} entries.
-        </p>
-      </section>
+          <p className="mt-4 text-sm text-[#b9a988]">
+            Showing {filteredCards.length} of {cards.length} entries.
+          </p>
+        </section>
+
+        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            Display Mode 顯示模式
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {displayOptions.map((option) => {
+              const isActive = option.value === displayMode;
+
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setDisplayMode(option.value)}
+                  className={`rounded-full border px-3 py-1.5 text-sm transition ${
+                    isActive
+                      ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
+                      : "border-[#a9762f]/30 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+
+          <p className="mt-4 text-sm text-[#b9a988]">
+            Use Chinese-only during play, or side-by-side while reviewing
+            translation.
+          </p>
+        </section>
+      </div>
 
       <section className="grid gap-3 sm:grid-cols-3">
         {(["draft", "reviewed", "approved"] as TranslationStatus[]).map(
@@ -223,12 +337,18 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
                       {card.code ? ` · ${card.code}` : ""}
                       {card.state ? ` ${card.state}` : ""}
                     </p>
-                    <h2 className="mt-2 text-2xl font-semibold text-[#fff6df]">
-                      {card.title.en}
-                    </h2>
-                    <p className="mt-1 text-xl font-semibold text-[#c98f3b]">
-                      {card.title.zh}
-                    </p>
+
+                    {displayMode !== "zh-only" && (
+                      <h2 className="mt-2 text-2xl font-semibold text-[#fff6df]">
+                        {card.title.en}
+                      </h2>
+                    )}
+
+                    {displayMode !== "en-only" && (
+                      <p className="mt-1 text-xl font-semibold text-[#c98f3b]">
+                        {card.title.zh}
+                      </p>
+                    )}
                   </div>
 
                   <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-3 py-1 text-xs text-[#b9a988]">
@@ -237,58 +357,23 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
                 </div>
 
                 {card.subtitle && (
-                  <div className="mt-4 grid gap-4 md:grid-cols-2">
-                    <div className="rounded-lg border border-[#a9762f]/40 bg-[#1c1a17] p-4">
-                      <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
-                        English subtitle
-                      </p>
-                      <p className="text-sm leading-6 text-[#ece3d2]">
-                        {card.subtitle.en}
-                      </p>
-                    </div>
-
-                    <div className="rounded-lg border border-[#a9762f]/40 bg-[#3a2b1c]/60 p-4">
-                      <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
-                        中文副標題
-                      </p>
-                      <p className="text-sm leading-6 text-[#fff6df]">
-                        {card.subtitle.zh}
-                      </p>
-                    </div>
+                  <div className="mt-4">
+                    <BilingualCardField
+                      field={card.subtitle}
+                      label="English subtitle"
+                      displayMode={displayMode}
+                    />
                   </div>
                 )}
 
                 <div className="mt-4 space-y-3">
                   {card.blocks.map((block) => (
-                    <div key={block.id} className="grid gap-4 md:grid-cols-2">
-                      <div className="rounded-lg border border-[#a9762f]/40 bg-[#1c1a17] p-4">
-                        <div className="mb-3 flex items-center justify-between gap-3">
-                          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
-                            {block.label ?? block.kind}
-                          </p>
-                          <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
-                            {statusLabels[block.content.status]}
-                          </span>
-                        </div>
-                        <p className="text-sm leading-6 text-[#ece3d2]">
-                          {block.content.en}
-                        </p>
-                      </div>
-
-                      <div className="rounded-lg border border-[#a9762f]/40 bg-[#3a2b1c]/60 p-4">
-                        <div className="mb-3 flex items-center justify-between gap-3">
-                          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
-                            繁體中文
-                          </p>
-                          <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
-                            {statusLabels[block.content.status]}
-                          </span>
-                        </div>
-                        <p className="text-sm leading-6 text-[#fff6df]">
-                          {block.content.zh}
-                        </p>
-                      </div>
-                    </div>
+                    <BilingualCardField
+                      key={block.id}
+                      field={block.content}
+                      label={block.label ?? block.kind}
+                      displayMode={displayMode}
+                    />
                   ))}
                 </div>
 
