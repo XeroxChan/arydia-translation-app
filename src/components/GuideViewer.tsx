@@ -29,6 +29,16 @@ const displayOptions: { value: DisplayMode; label: string }[] = [
   { value: "en-only", label: "English only" },
 ];
 
+const statusSummaryOptions: {
+  value: TranslationStatus;
+  label: string;
+  helper: string;
+}[] = [
+  { value: "draft", label: "Draft 草稿", helper: "Needs review" },
+  { value: "reviewed", label: "Reviewed 已檢查", helper: "Checked once" },
+  { value: "approved", label: "Approved 已確認", helper: "Ready for play" },
+];
+
 function blockMatchesStatus(block: GuideBlock, status: StatusFilter) {
   if (status === "all") return true;
 
@@ -97,12 +107,52 @@ function filterBlockBySearch(
   };
 }
 
+function countBlockStatuses(block: GuideBlock) {
+  const counts: Record<TranslationStatus, number> = {
+    draft: 0,
+    reviewed: 0,
+    approved: 0,
+  };
+
+  if (block.type === "paragraph") {
+    counts[block.status] += 1;
+    return counts;
+  }
+
+  block.items.forEach((item) => {
+    counts[item.status] += 1;
+  });
+
+  return counts;
+}
+
 export default function GuideViewer({ sections }: GuideViewerProps) {
   const [activeStatus, setActiveStatus] = useState<StatusFilter>("all");
   const [displayMode, setDisplayMode] = useState<DisplayMode>("side-by-side");
   const [search, setSearch] = useState("");
 
   const normalisedSearch = search.trim().toLowerCase();
+
+  const statusSummary = useMemo(() => {
+    return sections.reduce<Record<TranslationStatus, number>>(
+      (summary, section) => {
+        section.blocks.forEach((block) => {
+          const blockCounts = countBlockStatuses(block);
+
+          summary.draft += blockCounts.draft;
+          summary.reviewed += blockCounts.reviewed;
+          summary.approved += blockCounts.approved;
+        });
+
+        return summary;
+      },
+      {
+        draft: 0,
+        reviewed: 0,
+        approved: 0,
+      },
+    );
+  }, [sections]);
 
   const filteredSections = useMemo(() => {
     return sections
@@ -156,6 +206,43 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
           className="w-full rounded-md border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-[#ece3d2] placeholder:text-[#b9a988]/60 focus:border-[#c98f3b] focus:outline-none"
         />
       </div>
+
+      <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+        <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+              Review Summary
+            </p>
+            <h2 className="mt-1 text-xl font-semibold text-[#fff6df]">
+              Translation progress 翻譯進度
+            </h2>
+          </div>
+
+          <p className="text-sm text-[#b9a988]">
+            {statusSummary.draft +
+              statusSummary.reviewed +
+              statusSummary.approved}{" "}
+            guide items tracked
+          </p>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-3">
+          {statusSummaryOptions.map((option) => (
+            <div
+              key={option.value}
+              className="rounded-lg border border-[#a9762f]/30 bg-[#1c1a17] p-4"
+            >
+              <p className="text-sm text-[#b9a988]">{option.label}</p>
+              <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
+                {statusSummary[option.value]}
+              </p>
+              <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#b9a988]/70">
+                {option.helper}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
