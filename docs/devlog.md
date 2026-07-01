@@ -104,6 +104,22 @@ Working route:
 ```text
 http://localhost:3000/quick-start
 
+### Homepage milestone
+
+- Replaced the default Next.js homepage with a custom Arydia translation helper homepage.
+- Added navigation cards for:
+  - `/glossary`
+  - `/quick-start`
+- Used the same dark parchment / brass visual theme as the glossary page.
+- Accidentally edited the wrong `page.tsx` at first, then fixed it by updating the correct file:
+  `src/app/page.tsx`
+
+Working route:
+
+```text
+http://localhost:3000
+
+
 Next step:
 
 - Build the first `/quick-start` sample page.
