@@ -2,6 +2,16 @@
 
 ## 2026-07-01
 
+### Card library type refactor milestone
+
+- Locked the real Arydia card type translations in the glossary.
+- Added real Arydia card types for NPC, JOB, THR, FOE, KEY, DAY, EVT, TRV, REF, POI, Character, Skill Tree, and Path Rules cards.
+- Replaced the early generic card categories with real Arydia card type data.
+- Added flexible bilingual card text blocks so different card structures can be represented later.
+- Kept current card entries as safe placeholder content only.
+- Added `/cards` navigation through the header and homepage.
+- Added display mode support for the card library: side-by-side, Chinese-only, and English-only.
+
 ### Card library foundation milestone
 
 - Added a `/cards` route for the Arydia card translation index.
