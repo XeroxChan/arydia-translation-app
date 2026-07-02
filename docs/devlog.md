@@ -1,4 +1,37 @@
-# Development Log
+﻿# Development Log
+
+## 2026-07-02
+
+### Private data loader workflow milestone
+
+- Added a safe public/private data loading workflow.
+- Public GitHub mode continues to use demo placeholder data from `src/data/`.
+- Local private mode can use ignored JSON files from `private-data/`.
+- Added `.env.example` to document the private data flag:
+  - `ARYDIA_USE_PRIVATE_DATA=false`
+- Created local `.env.local` with private mode enabled, but confirmed it is ignored by Git.
+- Created safe local test JSON files:
+  - `private-data/quick-start.private.json`
+  - `private-data/cards.private.json`
+- Confirmed `/quick-start` can load ignored private guide data locally.
+- Confirmed `/cards` can load ignored private card data locally.
+- Fixed private JSON parsing by stripping the hidden UTF-8 BOM character before `JSON.parse`.
+- Confirmed Git safety:
+  - `.env.local` was not tracked.
+  - private JSON files were not tracked.
+  - only `.env.example` and loader code were committed.
+- Committed and pushed:
+  - `Handle private JSON encoding safely`
+
+### Next step
+
+Start the real Quick Start Guide translation workflow privately:
+
+1. Keep the public demo data unchanged.
+2. Replace the temporary private loader test entry with a real private Quick Start structure.
+3. Translate the Quick Start Guide in small reviewed chunks.
+4. Store full English source text and Traditional Chinese translation only inside ignored private files.
+5. Add only safe summary/demo changes to the public repo.
 
 ## 2026-07-01
 
@@ -13,11 +46,11 @@ Tomorrow, build the safe public/private data workflow:
 
 ### Naming, glossary, and private content safeguard milestone
 
-- Renamed the app identity away from “Translation Helper / 翻譯助手” toward a database-style name: `Arydia: The Paths We Dare Tread 中英資料庫`.
+- Renamed the app identity away from â€œTranslation Helper / ç¿»è­¯åŠ©æ‰‹â€ toward a database-style name: `Arydia: The Paths We Dare Tread ä¸­è‹±è³‡æ–™åº«`.
 - Cleaned up glossary thinking around duplicated-looking terms:
   - Kept separate concepts such as `Foe` / `Foe cards` and `Point of Interest` / `Point of Interest cards`.
   - Confirmed there is no separate `AI Card` card type in the current Arydia component structure.
-  - Chose `職業規則卡` for `path-rules-cards`.
+  - Chose `è·æ¥­è¦å‰‡å¡` for `path-rules-cards`.
 - Confirmed the long-term goal of the app:
   - store English source content,
   - provide accurate Traditional Chinese translations,
@@ -36,8 +69,8 @@ Tomorrow, build the safe public/private data workflow:
 
 ### Naming and glossary cleanup milestone
 
-- Renamed the app to Arydia: The Paths We Dare Tread 中英資料庫.
-- Removed old “translation helper / 翻譯助手” wording from the app identity.
+- Renamed the app to Arydia: The Paths We Dare Tread ä¸­è‹±è³‡æ–™åº«.
+- Removed old â€œtranslation helper / ç¿»è­¯åŠ©æ‰‹â€ wording from the app identity.
 - Cleaned up glossary card terms and aligned card type translations with the real Arydia component types.
 - Confirmed that the card library uses real Arydia card types rather than generic placeholder categories.
 
@@ -59,7 +92,7 @@ Tomorrow, build the safe public/private data workflow:
 - Updated the card model to use real Arydia card types instead of generic categories.
 - Added flexible bilingual card text blocks so different card structures can be handled later.
 - Locked real card type translations in the glossary.
-- Added Cards 卡牌 navigation to the header and homepage.
+- Added Cards å¡ç‰Œ navigation to the header and homepage.
 
 ### Quick Start search and review summary milestone
 
@@ -224,12 +257,12 @@ Current project structure:
 
 ```text
 src/
-├── app/
-│   ├── page.tsx
-│   ├── layout.tsx
-│   ├── globals.css
-│   └── glossary/
-│       └── page.tsx
-└── data/
-    └── glossary.ts
+â”œâ”€â”€ app/
+â”‚   â”œâ”€â”€ page.tsx
+â”‚   â”œâ”€â”€ layout.tsx
+â”‚   â”œâ”€â”€ globals.css
+â”‚   â””â”€â”€ glossary/
+â”‚       â””â”€â”€ page.tsx
+â””â”€â”€ data/
+    â””â”€â”€ glossary.ts
 ```
