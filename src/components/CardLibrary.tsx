@@ -1,6 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
+
+import CardEncounterToggle from "@/components/CardEncounterToggle";
 import { cardTypeDefinitions, cardTypeLabels } from "@/data/cardTypes";
 import type {
   ArydiaCardEntry,
@@ -8,6 +10,7 @@ import type {
   BilingualField,
   TranslationStatus,
 } from "@/data/types";
+import { useEncounteredCards } from "@/hooks/useEncounteredCards";
 
 type CardLibraryProps = {
   cards: ArydiaCardEntry[];
@@ -15,6 +18,9 @@ type CardLibraryProps = {
 
 type CardTypeFilter = "all" | ArydiaCardType;
 type DisplayMode = "side-by-side" | "zh-only" | "en-only";
+type EncounterFilter = "all" | "encountered" | "unencountered";
+type SpoilerMode = "hide-unencountered" | "show-all";
+type WorkflowMode = "play" | "review";
 
 const cardTypeOptions: { value: CardTypeFilter; label: string }[] = [
   { value: "all", label: "All 全部" },
@@ -30,18 +36,73 @@ const displayOptions: { value: DisplayMode; label: string }[] = [
   { value: "en-only", label: "English only" },
 ];
 
+const encounterFilterOptions: { value: EncounterFilter; label: string }[] = [
+  { value: "all", label: "All 全部" },
+  { value: "encountered", label: "Encountered 已遇到" },
+  { value: "unencountered", label: "Not encountered 未遇到" },
+];
+
+const spoilerModeOptions: { value: SpoilerMode; label: string }[] = [
+  { value: "hide-unencountered", label: "Hide spoilers 隱藏劇透" },
+  { value: "show-all", label: "Show all 顯示全部" },
+];
+
+const workflowModeOptions: { value: WorkflowMode; label: string }[] = [
+  { value: "play", label: "Play mode 遊玩模式" },
+  { value: "review", label: "Translation review 翻譯檢查" },
+];
+
 const statusLabels: Record<TranslationStatus, string> = {
   draft: "Draft 草稿",
   reviewed: "Reviewed 已檢查",
   approved: "Approved 已確認",
 };
 
+function filterButtonClass(isActive: boolean) {
+  return `rounded-full border px-3 py-1.5 text-sm transition ${
+    isActive
+      ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
+      : "border-[#a9762f]/30 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+  }`;
+}
+
 function fieldMatchesSearch(en: string, zh: string, search: string) {
   return `${en} ${zh}`.toLowerCase().includes(search);
 }
 
-function cardMatchesSearch(card: ArydiaCardEntry, search: string) {
+function cardSafeMetadataMatches(card: ArydiaCardEntry, search: string) {
+  const typeDefinition = cardTypeDefinitions.find(
+    (definition) => definition.type === card.type,
+  );
+
+  return [
+    card.id,
+    card.code,
+    card.type,
+    card.state,
+    cardTypeLabels[card.type],
+    typeDefinition?.code,
+    typeDefinition?.en,
+    typeDefinition?.zh,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase()
+    .includes(search);
+}
+
+function cardMatchesSearch(
+  card: ArydiaCardEntry,
+  search: string,
+  canSearchFullText: boolean,
+) {
   if (search === "") return true;
+
+  const safeMetadataMatches = cardSafeMetadataMatches(card, search);
+
+  if (!canSearchFullText) {
+    return safeMetadataMatches;
+  }
 
   const titleMatches = fieldMatchesSearch(card.title.en, card.title.zh, search);
 
@@ -53,26 +114,7 @@ function cardMatchesSearch(card: ArydiaCardEntry, search: string) {
     fieldMatchesSearch(block.content.en, block.content.zh, search),
   );
 
-  const typeDefinition = cardTypeDefinitions.find(
-    (definition) => definition.type === card.type,
-  );
-
-  const typeMatches = [
-    cardTypeLabels[card.type],
-    typeDefinition?.code,
-    typeDefinition?.en,
-    typeDefinition?.zh,
-    typeDefinition?.description,
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase()
-    .includes(search);
-
   const metadataMatches = [
-    card.code,
-    card.type,
-    card.state,
     card.notes,
     ...card.tags,
     ...(card.glossaryTermIds ?? []),
@@ -83,12 +125,32 @@ function cardMatchesSearch(card: ArydiaCardEntry, search: string) {
     .includes(search);
 
   return (
+    safeMetadataMatches ||
     titleMatches ||
     subtitleMatches ||
     blockMatches ||
-    typeMatches ||
     metadataMatches
   );
+}
+
+function countCardStatuses(card: ArydiaCardEntry) {
+  const counts: Record<TranslationStatus, number> = {
+    draft: 0,
+    reviewed: 0,
+    approved: 0,
+  };
+
+  counts[card.title.status] += 1;
+
+  if (card.subtitle) {
+    counts[card.subtitle.status] += 1;
+  }
+
+  card.blocks.forEach((block) => {
+    counts[block.content.status] += 1;
+  });
+
+  return counts;
 }
 
 function countStatuses(cards: ArydiaCardEntry[]) {
@@ -99,15 +161,11 @@ function countStatuses(cards: ArydiaCardEntry[]) {
   };
 
   cards.forEach((card) => {
-    counts[card.title.status] += 1;
+    const cardCounts = countCardStatuses(card);
 
-    if (card.subtitle) {
-      counts[card.subtitle.status] += 1;
-    }
-
-    card.blocks.forEach((block) => {
-      counts[block.content.status] += 1;
-    });
+    counts.draft += cardCounts.draft;
+    counts.reviewed += cardCounts.reviewed;
+    counts.approved += cardCounts.approved;
   });
 
   return counts;
@@ -117,11 +175,19 @@ function BilingualCardField({
   field,
   label,
   displayMode,
+  showTranslationStatus,
 }: {
   field: BilingualField;
   label: string;
   displayMode: DisplayMode;
+  showTranslationStatus: boolean;
 }) {
+  const statusBadge = showTranslationStatus ? (
+    <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
+      {statusLabels[field.status]}
+    </span>
+  ) : null;
+
   if (displayMode === "en-only") {
     return (
       <div className="rounded-lg border border-[#a9762f]/40 bg-[#1c1a17] p-4">
@@ -129,9 +195,7 @@ function BilingualCardField({
           <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
             {label}
           </p>
-          <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
-            {statusLabels[field.status]}
-          </span>
+          {statusBadge}
         </div>
         <p className="text-sm leading-6 text-[#ece3d2]">{field.en}</p>
       </div>
@@ -145,9 +209,7 @@ function BilingualCardField({
           <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
             繁體中文
           </p>
-          <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
-            {statusLabels[field.status]}
-          </span>
+          {statusBadge}
         </div>
         <p className="text-sm leading-6 text-[#fff6df]">{field.zh}</p>
       </div>
@@ -161,9 +223,7 @@ function BilingualCardField({
           <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
             {label}
           </p>
-          <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
-            {statusLabels[field.status]}
-          </span>
+          {statusBadge}
         </div>
         <p className="text-sm leading-6 text-[#ece3d2]">{field.en}</p>
       </div>
@@ -173,11 +233,58 @@ function BilingualCardField({
           <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
             繁體中文
           </p>
-          <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
-            {statusLabels[field.status]}
-          </span>
+          {statusBadge}
         </div>
         <p className="text-sm leading-6 text-[#fff6df]">{field.zh}</p>
+      </div>
+    </div>
+  );
+}
+
+function TranslationProgressBox({
+  cardStatusSummary,
+}: {
+  cardStatusSummary: Record<TranslationStatus, number>;
+}) {
+  const totalTrackedFields =
+    cardStatusSummary.draft +
+    cardStatusSummary.reviewed +
+    cardStatusSummary.approved;
+
+  return (
+    <div className="rounded-lg border border-[#a9762f]/30 bg-[#1c1a17] p-4">
+      <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+        Translation Progress 翻譯進度
+      </p>
+
+      <div className="grid gap-3 sm:grid-cols-4">
+        <div>
+          <p className="text-xs text-[#b9a988]">Tracked fields 欄位</p>
+          <p className="mt-1 text-2xl font-semibold text-[#c98f3b]">
+            {totalTrackedFields}
+          </p>
+        </div>
+
+        <div>
+          <p className="text-xs text-[#b9a988]">Draft 草稿</p>
+          <p className="mt-1 text-2xl font-semibold text-[#c98f3b]">
+            {cardStatusSummary.draft}
+          </p>
+        </div>
+
+        <div>
+          <p className="text-xs text-[#b9a988]">Reviewed 已檢查</p>
+          <p className="mt-1 text-2xl font-semibold text-[#c98f3b]">
+            {cardStatusSummary.reviewed}
+          </p>
+        </div>
+
+        <div>
+          <p className="text-xs text-[#b9a988]">Approved 已確認</p>
+          <p className="mt-1 text-2xl font-semibold text-[#c98f3b]">
+            {cardStatusSummary.approved}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -188,19 +295,67 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
   const [activeType, setActiveType] = useState<CardTypeFilter>("all");
   const [displayMode, setDisplayMode] =
     useState<DisplayMode>("side-by-side");
+  const [encounterFilter, setEncounterFilter] =
+    useState<EncounterFilter>("all");
+  const [spoilerMode, setSpoilerMode] =
+    useState<SpoilerMode>("hide-unencountered");
+  const [workflowMode, setWorkflowMode] = useState<WorkflowMode>("play");
+
+  const {
+    encounteredCardIds,
+    isLoaded: isProgressLoaded,
+    isEncountered,
+    toggleEncountered,
+    resetEncounteredCards,
+  } = useEncounteredCards();
 
   const normalisedSearch = search.trim().toLowerCase();
+  const showTranslationWorkflow = workflowMode === "review";
 
   const filteredCards = useMemo(() => {
     return cards.filter((card) => {
+      const encountered = encounteredCardIds.has(card.id);
       const matchesType = activeType === "all" || card.type === activeType;
-      const matchesSearch = cardMatchesSearch(card, normalisedSearch);
+      const matchesEncounter =
+        encounterFilter === "all" ||
+        (encounterFilter === "encountered" && encountered) ||
+        (encounterFilter === "unencountered" && !encountered);
+      const canSearchFullText = encountered || spoilerMode === "show-all";
+      const matchesSearch = cardMatchesSearch(
+        card,
+        normalisedSearch,
+        canSearchFullText,
+      );
 
-      return matchesType && matchesSearch;
+      return matchesType && matchesEncounter && matchesSearch;
     });
-  }, [cards, activeType, normalisedSearch]);
+  }, [
+    cards,
+    activeType,
+    encounterFilter,
+    encounteredCardIds,
+    normalisedSearch,
+    spoilerMode,
+  ]);
 
   const statusSummary = useMemo(() => countStatuses(cards), [cards]);
+
+  const encounteredCardsInLibrary = useMemo(
+    () => cards.filter((card) => encounteredCardIds.has(card.id)).length,
+    [cards, encounteredCardIds],
+  );
+
+  const unencounteredCardsInLibrary = cards.length - encounteredCardsInLibrary;
+
+  function handleResetProgress() {
+    const shouldReset = window.confirm(
+      "Reset all encountered card progress in this browser?",
+    );
+
+    if (shouldReset) {
+      resetEncounteredCards();
+    }
+  }
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4">
@@ -212,9 +367,9 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
           Arydia Card Index 卡牌索引
         </h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-[#b9a988]">
-          This page is a private-use structure for future card translations.
-          Current entries are placeholders only, so no full copyrighted card text
-          is stored in the public app.
+          This page supports two workflows: spoiler-safe play tracking and
+          translation review. Play mode hides translation workflow information by
+          default.
         </p>
       </section>
 
@@ -234,37 +389,35 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
           placeholder="Search English, 中文, tags, codes..."
           className="w-full rounded-md border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-[#ece3d2] placeholder:text-[#b9a988]/60 focus:border-[#c98f3b] focus:outline-none"
         />
+
+        <p className="mt-3 text-xs leading-5 text-[#b9a988]/80">
+          Spoiler-safe search only checks code/type metadata for unencountered
+          cards while spoiler hiding is active.
+        </p>
       </section>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
           <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
-            Card Type Filter 卡牌類型篩選
+            Workflow Mode 工作模式
           </p>
 
           <div className="flex flex-wrap gap-2">
-            {cardTypeOptions.map((option) => {
-              const isActive = option.value === activeType;
-
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => setActiveType(option.value)}
-                  className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                    isActive
-                      ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
-                      : "border-[#a9762f]/30 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
-                  }`}
-                >
-                  {option.label}
-                </button>
-              );
-            })}
+            {workflowModeOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setWorkflowMode(option.value)}
+                className={filterButtonClass(option.value === workflowMode)}
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
 
           <p className="mt-4 text-sm text-[#b9a988]">
-            Showing {filteredCards.length} of {cards.length} entries.
+            Play mode hides translation status. Review mode shows translation
+            progress and draft/review badges.
           </p>
         </section>
 
@@ -274,24 +427,16 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
           </p>
 
           <div className="flex flex-wrap gap-2">
-            {displayOptions.map((option) => {
-              const isActive = option.value === displayMode;
-
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => setDisplayMode(option.value)}
-                  className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                    isActive
-                      ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
-                      : "border-[#a9762f]/30 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
-                  }`}
-                >
-                  {option.label}
-                </button>
-              );
-            })}
+            {displayOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setDisplayMode(option.value)}
+                className={filterButtonClass(option.value === displayMode)}
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
 
           <p className="mt-4 text-sm text-[#b9a988]">
@@ -299,23 +444,126 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
             translation.
           </p>
         </section>
+
+        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            Card Type Filter 卡牌類型篩選
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {cardTypeOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setActiveType(option.value)}
+                className={filterButtonClass(option.value === activeType)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+
+          <p className="mt-4 text-sm text-[#b9a988]">
+            Showing {filteredCards.length} of {cards.length} entries.
+          </p>
+        </section>
+
+        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            Encounter Filter 遇到狀態篩選
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {encounterFilterOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setEncounterFilter(option.value)}
+                className={filterButtonClass(option.value === encounterFilter)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+
+          <p className="mt-4 text-sm text-[#b9a988]">
+            Progress is saved only in this browser.
+          </p>
+        </section>
+
+        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg lg:col-span-2">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            Spoiler Guard 劇透保護
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {spoilerModeOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setSpoilerMode(option.value)}
+                className={filterButtonClass(option.value === spoilerMode)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={handleResetProgress}
+            className="mt-4 rounded-full border border-red-400/40 bg-[#1c1a17] px-3 py-1.5 text-sm text-red-200 transition hover:border-red-300 hover:text-red-100"
+          >
+            Reset encounter progress 重設遇到紀錄
+          </button>
+        </section>
       </div>
 
-      <section className="grid gap-3 sm:grid-cols-3">
-        {(["draft", "reviewed", "approved"] as TranslationStatus[]).map(
-          (status) => (
-            <div
-              key={status}
-              className="rounded-lg border border-[#a9762f]/30 bg-[#2a241d] p-4"
-            >
-              <p className="text-sm text-[#b9a988]">{statusLabels[status]}</p>
-              <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
-                {statusSummary[status]}
-              </p>
-            </div>
-          ),
-        )}
+      <section
+        className={`grid gap-3 sm:grid-cols-2 ${
+          showTranslationWorkflow ? "lg:grid-cols-6" : "lg:grid-cols-3"
+        }`}
+      >
+        <div className="rounded-lg border border-[#a9762f]/30 bg-[#2a241d] p-4">
+          <p className="text-sm text-[#b9a988]">Total cards 總卡牌</p>
+          <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
+            {cards.length}
+          </p>
+        </div>
+
+        <div className="rounded-lg border border-[#a9762f]/30 bg-[#2a241d] p-4">
+          <p className="text-sm text-[#b9a988]">Encountered 已遇到</p>
+          <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
+            {encounteredCardsInLibrary}
+          </p>
+        </div>
+
+        <div className="rounded-lg border border-[#a9762f]/30 bg-[#2a241d] p-4">
+          <p className="text-sm text-[#b9a988]">Hidden / New 未遇到</p>
+          <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
+            {unencounteredCardsInLibrary}
+          </p>
+        </div>
+
+        {showTranslationWorkflow &&
+          (["draft", "reviewed", "approved"] as TranslationStatus[]).map(
+            (status) => (
+              <div
+                key={status}
+                className="rounded-lg border border-[#a9762f]/30 bg-[#2a241d] p-4"
+              >
+                <p className="text-sm text-[#b9a988]">{statusLabels[status]}</p>
+                <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
+                  {statusSummary[status]}
+                </p>
+              </div>
+            ),
+          )}
       </section>
+
+      {!isProgressLoaded && (
+        <p className="text-sm text-[#b9a988]">Loading encounter progress...</p>
+      )}
 
       <section className="space-y-4">
         {filteredCards.length > 0 ? (
@@ -323,6 +571,13 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
             const typeDefinition = cardTypeDefinitions.find(
               (definition) => definition.type === card.type,
             );
+            const encountered = isEncountered(card.id);
+            const shouldHideDetails =
+              !encountered && spoilerMode === "hide-unencountered";
+            const cardStatusSummary = countCardStatuses(card);
+            const safeCardLabel = card.code
+              ? `${card.code}${card.state ? ` ${card.state}` : ""}`
+              : card.id;
 
             return (
               <article
@@ -338,67 +593,120 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
                       {card.state ? ` ${card.state}` : ""}
                     </p>
 
-                    {displayMode !== "zh-only" && (
-                      <h2 className="mt-2 text-2xl font-semibold text-[#fff6df]">
-                        {card.title.en}
-                      </h2>
+                    {shouldHideDetails ? (
+                      <>
+                        <h2 className="mt-2 text-2xl font-semibold text-[#fff6df]">
+                          Spoiler-protected card 已隱藏卡牌
+                        </h2>
+                        <p className="mt-1 text-sm text-[#b9a988]">
+                          Safe label: {safeCardLabel}
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        {displayMode !== "zh-only" && (
+                          <h2 className="mt-2 text-2xl font-semibold text-[#fff6df]">
+                            {card.title.en}
+                          </h2>
+                        )}
+
+                        {displayMode !== "en-only" && (
+                          <p className="mt-1 text-xl font-semibold text-[#c98f3b]">
+                            {card.title.zh}
+                          </p>
+                        )}
+                      </>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col items-start gap-2 sm:items-end">
+                    <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-3 py-1 text-xs text-[#b9a988]">
+                      {encountered
+                        ? "Encountered 已遇到"
+                        : "Not encountered 未遇到"}
+                    </span>
+
+                    <CardEncounterToggle
+                      encountered={encountered}
+                      onToggle={() => toggleEncountered(card.id)}
+                    />
+                  </div>
+                </div>
+
+                {shouldHideDetails ? (
+                  <div className="mt-4 space-y-4">
+                    <div className="rounded-lg border border-[#a9762f]/30 bg-[#1c1a17] p-4">
+                      <p className="text-sm leading-6 text-[#b9a988]">
+                        This card has not been marked as encountered, so its
+                        title, story text, translation text, tags, and notes are
+                        hidden.
+                      </p>
+                    </div>
+
+                    {showTranslationWorkflow && (
+                      <TranslationProgressBox
+                        cardStatusSummary={cardStatusSummary}
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    {showTranslationWorkflow && (
+                      <div className="mt-4">
+                        <TranslationProgressBox
+                          cardStatusSummary={cardStatusSummary}
+                        />
+                      </div>
                     )}
 
-                    {displayMode !== "en-only" && (
-                      <p className="mt-1 text-xl font-semibold text-[#c98f3b]">
-                        {card.title.zh}
+                    {card.subtitle && (
+                      <div className="mt-4">
+                        <BilingualCardField
+                          field={card.subtitle}
+                          label="English subtitle"
+                          displayMode={displayMode}
+                          showTranslationStatus={showTranslationWorkflow}
+                        />
+                      </div>
+                    )}
+
+                    <div className="mt-4 space-y-3">
+                      {card.blocks.map((block) => (
+                        <BilingualCardField
+                          key={block.id}
+                          field={block.content}
+                          label={block.label ?? block.kind}
+                          displayMode={displayMode}
+                          showTranslationStatus={showTranslationWorkflow}
+                        />
+                      ))}
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {card.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-[#a9762f]/30 bg-[#1c1a17] px-2.5 py-1 text-xs text-[#b9a988]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {card.notes && (
+                      <p className="mt-4 text-xs leading-5 text-[#b9a988]/80">
+                        Note: {card.notes}
                       </p>
                     )}
-                  </div>
-
-                  <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-3 py-1 text-xs text-[#b9a988]">
-                    {statusLabels[card.title.status]}
-                  </span>
-                </div>
-
-                {card.subtitle && (
-                  <div className="mt-4">
-                    <BilingualCardField
-                      field={card.subtitle}
-                      label="English subtitle"
-                      displayMode={displayMode}
-                    />
-                  </div>
-                )}
-
-                <div className="mt-4 space-y-3">
-                  {card.blocks.map((block) => (
-                    <BilingualCardField
-                      key={block.id}
-                      field={block.content}
-                      label={block.label ?? block.kind}
-                      displayMode={displayMode}
-                    />
-                  ))}
-                </div>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {card.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-[#a9762f]/30 bg-[#1c1a17] px-2.5 py-1 text-xs text-[#b9a988]"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {card.notes && (
-                  <p className="mt-4 text-xs leading-5 text-[#b9a988]/80">
-                    Note: {card.notes}
-                  </p>
+                  </>
                 )}
               </article>
             );
           })
         ) : (
           <div className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-6 text-center text-[#b9a988]">
-            No card entries match your current search or card type filter.
+            No card entries match your current search, card type, or encounter
+            filter.
           </div>
         )}
       </section>
