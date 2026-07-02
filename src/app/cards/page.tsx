@@ -1,6 +1,8 @@
-import CardLibrary from "@/components/CardLibrary";
-import { cardLibrary } from "@/data/cardLibrary";
+﻿import CardLibrary from "@/components/CardLibrary";
+import { loadCardLibrary } from "@/data/loadCardLibrary";
 
-export default function CardsPage() {
+export default async function CardsPage() {
+  const cardLibrary = await loadCardLibrary();
+
   return <CardLibrary cards={cardLibrary} />;
 }

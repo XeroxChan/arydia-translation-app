@@ -1,7 +1,9 @@
-import GuideViewer from "@/components/GuideViewer";
-import { quickStartGuide } from "@/data/quickStartGuide";
+﻿import GuideViewer from "@/components/GuideViewer";
+import { loadQuickStartGuide } from "@/data/loadQuickStartGuide";
 
-export default function QuickStartPage() {
+export default async function QuickStartPage() {
+  const quickStartGuide = await loadQuickStartGuide();
+
   return (
     <main className="min-h-screen bg-[#1c1a17] p-4 text-[#ece3d2] sm:p-6 lg:p-8">
       <div className="mx-auto max-w-5xl">
