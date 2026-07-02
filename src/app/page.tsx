@@ -1,23 +1,30 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 const cards = [
   {
     title: "Glossary",
-    zh: "術語表",
+    zh: "\u8853\u8a9e\u8868",
     href: "/glossary",
     description:
       "Check English and Traditional Chinese terminology for consistent translation.",
   },
   {
     title: "Quick Start Guide",
-    zh: "新手快速上手指南",
+    zh: "\u65b0\u624b\u5feb\u901f\u4e0a\u624b\u6307\u5357",
     href: "/quick-start",
     description:
       "Read sample bilingual guide sections side by side during development.",
   },
   {
+    title: "Rulebook",
+    zh: "\u898f\u5247\u66f8",
+    href: "/rulebook",
+    description:
+      "Translate selected rulebook sections privately and extract safe database structure notes.",
+  },
+  {
     title: "Card Library",
-    zh: "卡牌索引",
+    zh: "\u5361\u724c\u7d22\u5f15",
     href: "/cards",
     description:
       "Browse placeholder card entries using the real Arydia card type structure.",
@@ -34,7 +41,7 @@ export default function HomePage() {
           </p>
 
           <h1 className="mb-4 text-4xl font-bold text-[#c98f3b]">
-            Arydia, the Paths We Dare Tread 中英資料庫
+            {"Arydia, the Paths We Dare Tread \u4e2d\u82f1\u8cc7\u6599\u5eab"}
           </h1>
 
           <p className="max-w-3xl leading-7 text-[#b9a988]">
@@ -44,7 +51,7 @@ export default function HomePage() {
           </p>
         </section>
 
-        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {cards.map((card) => (
             <Link
               key={card.href}
