@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -18,6 +18,11 @@ const navItems = [
     label: "Quick Start",
     zh: "快速指南",
     href: "/quick-start",
+  },
+  {
+    label: "Rulebook",
+    zh: "規則書",
+    href: "/rulebook",
   },
   {
     label: "Cards",
