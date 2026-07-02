@@ -2,6 +2,41 @@
 
 ## 2026-07-02
 
+### Next step
+
+Continue the rulebook translation workflow carefully:
+
+1. Keep `/rulebook` as a pure translation workspace.
+2. Store exact/close English rulebook wording and Traditional Chinese translation only in `private-data/rulebook.private.json`.
+3. Store schema conclusions only in `docs/schema-notes.md`.
+4. Continue with the next schema-relevant rulebook pass:
+   - card indexes
+   - active/inactive decks
+   - card states
+   - banish / party inventory / cleared state
+5. Use the findings to refine card database structure before entering real card content.
+
+### Rulebook translation workflow cleanup milestone
+
+- Added the `/rulebook` translation workspace and homepage/header links.
+- Confirmed the rulebook page loads private ignored rulebook data locally.
+- Confirmed `private-data/rulebook.private.json` remains ignored by Git.
+- Added `docs/schema-notes.md` as the public-safe place for database/schema conclusions.
+- Started using the rulebook as a schema-discovery source before entering real card content.
+- Added glossary terms for rulebook/card structure, including text types, card state, active/inactive cards, locations, pointers, interaction actions, cleared/unexplored, and related map terms.
+- Fixed terminology convention:
+  - Use `文字` instead of `文` for UI/database text types.
+  - Example: `Choice Text` = `選項文字`, not `選項文`.
+- Identified and corrected an important workflow mistake:
+  - `/rulebook` should contain English rulebook text + Traditional Chinese translation only.
+  - Database design notes should live in `docs/schema-notes.md`, not in the rulebook translation page.
+- Cleaned `/rulebook` wording:
+  - Changed the page title from rulebook translation + structure notes to rulebook translation only.
+  - Removed schema-note wording from the public fallback rulebook data.
+- Established encoding rule for future work:
+  - Do not write raw Chinese through PowerShell + Node here-strings.
+  - Use Unicode escapes or edit files directly in VS Code with UTF-8 to avoid corrupted Chinese characters.
+
 ### Rulebook schema discovery workspace milestone
 
 - Added a new `/rulebook` workspace page.
@@ -307,6 +342,7 @@ src/
 â””â”€â”€ data/
     â””â”€â”€ glossary.ts
 ```
+
 
 
 
