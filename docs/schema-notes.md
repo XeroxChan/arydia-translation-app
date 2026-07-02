@@ -82,3 +82,63 @@ Potential rulebook translation fields:
 - translation status
 - schema notes derived from the section
 
+
+## Rulebook pass 1: Text Types and branching card text
+
+Source focus: rulebook text-type and early card-type explanations.
+
+### Schema conclusions
+
+Cards and rulebook sections should not store all text as one undifferentiated field. Arydia uses different text roles, and those roles affect both gameplay and spoiler handling.
+
+Recommended text block categories:
+
+- narrative
+- rules
+- roleplay
+- verbal
+- actionDescription
+- choice
+- response
+- nestedChoice
+- nestedResponse
+- townGuildAction
+- fallbackChoice
+
+### Branching cards
+
+NPC and POI style cards likely need structured branching data.
+
+Potential structure:
+
+- front narrative
+- visible choice prompts
+- response sections keyed by choice
+- fallback / any-other-topic response
+- nested choices inside responses
+- nested response sections
+- checks inside responses
+- rewards or draw instructions
+- cleared / uncleared return behavior
+
+### Event cards
+
+Event cards may be more linear than NPC or POI interactions, but they still need separate block types.
+
+Potential structure:
+
+- title
+- narrative blocks
+- rules blocks
+- optional prompt/choice blocks
+- resolution instruction
+- banish / return / clear behavior
+
+### Translation implications
+
+Translation status should be tracked per block, not only per whole card. A card may have reviewed title text but draft response text.
+
+### Spoiler implications
+
+Choice labels, titles, and response headings can be spoilers. Safe metadata should remain limited to card type, code, state, and encounter/progress status unless the card has been encountered or spoiler guard is disabled.
+
