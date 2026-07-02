@@ -2,6 +2,16 @@
 
 ## 2026-07-02
 
+### Encounter progress import/export milestone
+
+- Added encounter progress backup tools to the card library.
+- Added `Export progress`, which downloads a JSON backup of encountered card IDs.
+- Added `Import progress`, which restores encountered card IDs from a JSON file.
+- Import validates IDs against the current card library and ignores unknown card IDs.
+- Backup files contain only encounter progress IDs.
+- Backup files do not contain card text, translations, or private Arydia content.
+- Confirmed export, reset, import, and refresh behavior works locally.
+
 ### Spoiler-safe card encounter tracker milestone
 
 - Added browser-local card encounter tracking using `localStorage`.
@@ -282,4 +292,5 @@ src/
 â””â”€â”€ data/
     â””â”€â”€ glossary.ts
 ```
+
 
