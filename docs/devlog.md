@@ -2,6 +2,21 @@
 
 ## 2026-07-02
 
+### Rulebook schema discovery workspace milestone
+
+- Added a new `/rulebook` workspace page.
+- Added public-safe demo rulebook data:
+  - `src/data/rulebook.ts`
+- Added a private rulebook loader:
+  - `src/data/loadRulebook.ts`
+- Added Rulebook navigation to the app header.
+- Added public-safe schema notes:
+  - `docs/schema-notes.md`
+- Created ignored private test data:
+  - `private-data/rulebook.private.json`
+- Confirmed `/rulebook` loads ignored private data locally.
+- Confirmed private rulebook JSON is not tracked by Git.
+
 ### Encounter progress import/export milestone
 
 - Added encounter progress backup tools to the card library.
@@ -292,5 +307,6 @@ src/
 â””â”€â”€ data/
     â””â”€â”€ glossary.ts
 ```
+
 
 
