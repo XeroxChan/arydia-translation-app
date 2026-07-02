@@ -16,6 +16,10 @@ function shouldUsePrivateData() {
   return process.env[PRIVATE_DATA_FLAG] === "true";
 }
 
+function parseJsonFile(file: string): unknown {
+  return JSON.parse(file.replace(/^\uFEFF/, ""));
+}
+
 function isCardLibrary(value: unknown): value is ArydiaCardEntry[] {
   return Array.isArray(value);
 }
@@ -27,7 +31,7 @@ export async function loadCardLibrary(): Promise<ArydiaCardEntry[]> {
 
   try {
     const file = await readFile(privateCardLibraryPath, "utf8");
-    const parsed = JSON.parse(file) as unknown;
+    const parsed = parseJsonFile(file);
 
     if (isCardLibrary(parsed)) {
       return parsed;
