@@ -9,17 +9,17 @@ export default async function RulebookPage() {
       <div className="mx-auto max-w-5xl">
         <section className="mb-8 rounded-xl border border-[#a9762f]/50 bg-[#2a241d] p-6 shadow-lg">
           <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
-            Rulebook Workspace
+            Rulebook Translation
           </p>
 
           <h1 className="mb-3 text-4xl font-bold text-[#c98f3b]">
-            規則書翻譯與結構筆記 · Rulebook Translation
+            {"\u898f\u5247\u66f8\u7ffb\u8b6f \u00b7 Rulebook Translation"}
           </h1>
 
           <p className="max-w-3xl text-sm leading-7 text-[#b9a988]">
             Private rulebook translation workspace. Use this page to translate
-            rulebook sections in small reviewed chunks and extract safe database
-            design notes for the public repo.
+            rulebook sections in small reviewed chunks with English and
+            Traditional Chinese side by side.
           </p>
         </section>
 
