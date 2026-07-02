@@ -2,6 +2,32 @@
 
 ## 2026-07-02
 
+### Spoiler-safe card encounter tracker milestone
+
+- Added browser-local card encounter tracking using `localStorage`.
+- Added a reusable encounter progress hook:
+  - `src/hooks/useEncounteredCards.ts`
+- Added a reusable card encounter toggle component:
+  - `src/components/CardEncounterToggle.tsx`
+- Updated the card library page to support encountered status:
+  - All cards
+  - Encountered only
+  - Not encountered only
+- Added spoiler protection for unencountered cards.
+- Unencountered cards hide spoiler-sensitive content by default:
+  - title
+  - subtitle
+  - story/rules text
+  - tags
+  - notes
+- Added separate workflow modes:
+  - Play mode / 遊玩模式
+  - Translation review / 翻譯檢查
+- Play mode hides translation workflow information by default.
+- Translation review mode shows translation progress and draft/review/approved badges.
+- Encounter progress is private to the browser and is not committed to Git.
+- Confirmed the tracker works after refresh.
+
 ### Private data loader workflow milestone
 
 - Added a safe public/private data loading workflow.
@@ -22,16 +48,6 @@
   - only `.env.example` and loader code were committed.
 - Committed and pushed:
   - `Handle private JSON encoding safely`
-
-### Next step
-
-Start the real Quick Start Guide translation workflow privately:
-
-1. Keep the public demo data unchanged.
-2. Replace the temporary private loader test entry with a real private Quick Start structure.
-3. Translate the Quick Start Guide in small reviewed chunks.
-4. Store full English source text and Traditional Chinese translation only inside ignored private files.
-5. Add only safe summary/demo changes to the public repo.
 
 ## 2026-07-01
 
@@ -266,3 +282,4 @@ src/
 â””â”€â”€ data/
     â””â”€â”€ glossary.ts
 ```
+
