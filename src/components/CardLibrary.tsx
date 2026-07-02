@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState, type ChangeEvent } from "react";
 
 import CardEncounterToggle from "@/components/CardEncounterToggle";
 import { cardTypeDefinitions, cardTypeLabels } from "@/data/cardTypes";
@@ -300,13 +300,16 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
   const [spoilerMode, setSpoilerMode] =
     useState<SpoilerMode>("hide-unencountered");
   const [workflowMode, setWorkflowMode] = useState<WorkflowMode>("play");
+  const importInputRef = useRef<HTMLInputElement>(null);
 
   const {
     encounteredCardIds,
+    encounteredCardIdList,
     isLoaded: isProgressLoaded,
     isEncountered,
     toggleEncountered,
     resetEncounteredCards,
+    replaceEncounteredCards,
   } = useEncounteredCards();
 
   const normalisedSearch = search.trim().toLowerCase();
@@ -354,6 +357,77 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
 
     if (shouldReset) {
       resetEncounteredCards();
+    }
+  }
+
+  function handleExportProgress() {
+    const payload = {
+      app: "Arydia bilingual database",
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      encounteredCardIds: encounteredCardIdList,
+    };
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = `arydia-encounter-progress-${new Date()
+      .toISOString()
+      .slice(0, 10)}.json`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  function handleImportProgressClick() {
+    importInputRef.current?.click();
+  }
+
+  async function handleImportProgressFile(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+
+    if (!file) {
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text) as
+        | { encounteredCardIds?: unknown }
+        | string[];
+
+      const importedIds = Array.isArray(parsed)
+        ? parsed.filter((id): id is string => typeof id === "string")
+        : Array.isArray(parsed.encounteredCardIds)
+          ? parsed.encounteredCardIds.filter(
+              (id): id is string => typeof id === "string",
+            )
+          : [];
+
+      const knownCardIds = new Set(cards.map((card) => card.id));
+      const validImportedIds = Array.from(
+        new Set(importedIds.filter((id) => knownCardIds.has(id))),
+      ).sort();
+      const ignoredCount = importedIds.length - validImportedIds.length;
+
+      const shouldImport = window.confirm(
+        `Import ${validImportedIds.length} encountered card IDs? ${ignoredCount} unknown IDs will be ignored. This will replace the current encounter progress in this browser.`,
+      );
+
+      if (shouldImport) {
+        replaceEncounteredCards(validImportedIds);
+      }
+    } catch (error) {
+      console.warn("Could not import encounter progress.", error);
+      window.alert("Could not import encounter progress. Please check the JSON file.");
     }
   }
 
@@ -516,6 +590,43 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
           >
             Reset encounter progress 重設遇到紀錄
           </button>
+        </section>
+
+        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg lg:col-span-2">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            Progress Backup
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={handleExportProgress}
+              className={filterButtonClass(false)}
+            >
+              Export progress
+            </button>
+
+            <button
+              type="button"
+              onClick={handleImportProgressClick}
+              className={filterButtonClass(false)}
+            >
+              Import progress
+            </button>
+          </div>
+
+          <input
+            ref={importInputRef}
+            type="file"
+            accept="application/json,.json"
+            className="hidden"
+            onChange={handleImportProgressFile}
+          />
+
+          <p className="mt-4 text-sm leading-6 text-[#b9a988]">
+            Backup files only contain encountered card IDs. They do not contain
+            card text, translations, or private Arydia content.
+          </p>
         </section>
       </div>
 

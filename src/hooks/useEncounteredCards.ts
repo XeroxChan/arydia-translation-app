@@ -147,6 +147,10 @@ export function useEncounteredCards() {
     [updateEncounteredCards],
   );
 
+  const replaceEncounteredCards = useCallback((cardIds: string[]) => {
+    writeStoredEncounteredCardIds(cardIds);
+  }, []);
+
   const resetEncounteredCards = useCallback(() => {
     writeStoredEncounteredCardIds([]);
   }, []);
@@ -159,6 +163,7 @@ export function useEncounteredCards() {
     markEncountered,
     markUnencountered,
     toggleEncountered,
+    replaceEncounteredCards,
     resetEncounteredCards,
   };
 }
