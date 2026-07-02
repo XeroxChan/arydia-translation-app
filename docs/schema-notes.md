@@ -142,3 +142,95 @@ Translation status should be tracked per block, not only per whole card. A card 
 
 Choice labels, titles, and response headings can be spoilers. Safe metadata should remain limited to card type, code, state, and encounter/progress status unless the card has been encountered or spoiler guard is disabled.
 
+
+## Rulebook pass 2: Locations, pointers, and interactions
+
+Source focus: location structure, map pointers, interact actions, NPC/POI interaction flow, and cleared/unexplored behavior.
+
+### Schema conclusions
+
+Locations are not single objects. A location may contain one or more map records, and each map may contain multiple typed pointers.
+
+Potential map fields:
+
+- id
+- code
+- state
+- title
+- narrationBlocks
+- rulesBlocks
+- pointerGroups
+  - mapPointers
+  - npcPointers
+  - poiPointers
+  - eventPointers
+  - foePointers
+  - chestPointers
+  - stairsPointers
+
+### Pointer records
+
+Pointers should be structured rather than stored as plain text.
+
+Potential pointer fields:
+
+- pointerId
+- pointerType
+- targetCode
+- targetType
+- label
+- locationOnMap
+- encounterVisibility
+- notes
+
+### Interaction records
+
+Interact actions should be modeled by target type.
+
+Potential interaction types:
+
+- poiInteraction
+- eventTrigger
+- npcConversation
+- chestOpen
+
+Each interaction type may need a different UI and different progress handling.
+
+### NPC and POI records
+
+NPC and POI records should support:
+
+- code
+- state
+- title/name
+- role or descriptor
+- opening narrative
+- topic choices
+- response blocks
+- fallback response
+- nested choices
+- checks
+- rewards
+- draw/update/banish instructions
+- RP availability
+- cleared condition
+
+### Progress implications
+
+Encountered and cleared are not identical.
+
+Potential future progress fields:
+
+- encounteredIds
+- clearedIds
+- claimedRpIds
+- activeStateByBaseId
+- partyInventoryIds
+- banishedIds
+
+For now, the app only tracks encountered card IDs in browser storage. Later, campaign profiles may need separate cleared and active-state tracking.
+
+### Spoiler implications
+
+Safe metadata can include card type, code, state, and encountered/cleared status. Pointer labels, NPC names, POI titles, choices, and responses may all be spoilers depending on context.
+
