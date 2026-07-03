@@ -25,7 +25,7 @@ export default function BilingualPair({
       <div className="rounded-lg border border-[#c98f3b]/50 bg-[#3a2b1c]/70 p-4">
         <div className="mb-2 flex items-center justify-between gap-2">
           <span className="block text-xs uppercase tracking-wider text-[#b9a988]">
-            繁體中文
+            {"\u7e41\u9ad4\u4e2d\u6587"}
           </span>
           <StatusBadge status={status} />
         </div>
@@ -86,7 +86,7 @@ export default function BilingualPair({
       <div className="rounded-lg border border-[#c98f3b]/50 bg-[#3a2b1c]/70 p-4">
         <div className="mb-2 flex items-center justify-between gap-2">
           <span className="block text-xs uppercase tracking-wider text-[#b9a988]">
-            繁體中文
+            {"\u7e41\u9ad4\u4e2d\u6587"}
           </span>
           <StatusBadge status={status} />
         </div>

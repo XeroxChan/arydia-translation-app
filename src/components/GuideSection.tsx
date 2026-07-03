@@ -11,13 +11,15 @@ export default function GuideSection({
   displayMode,
 }: GuideSectionProps) {
   return (
-    <section id={section.id} className="mb-10 scroll-mt-24">
+    <section id={section.id} className="mb-10 scroll-mt-24 last:mb-0">
       <p className="mb-2 text-xs uppercase tracking-[0.2em] text-[#b9a988]">
         Page {section.page}
       </p>
 
       <h2 className="mb-4 border-b border-[#a9762f]/50 pb-2 text-2xl font-bold text-[#c98f3b]">
-        {section.titleZh} · {section.titleEn}
+        {section.titleZh}
+        {" \u00b7 "}
+        {section.titleEn}
       </h2>
 
       <div className="space-y-5">
