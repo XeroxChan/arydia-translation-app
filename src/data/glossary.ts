@@ -580,4 +580,18 @@ export const glossaryData: GlossaryTerm[] = [
     description: "戰鬥輪中由一名流亡者執行行動的部分。",
     tags: ["Rules", "Combat"],
   },
+  {
+    id: "enter-location",
+    en: "Enter Location",
+    zh: "進入地點",
+    description: "從世界地圖上的地圖指標進入地點的行動，通常會抽出對應地圖並將流亡者放在進入指標附近。",
+    tags: ["Rules", "Maps", "Locations"],
+  },
+  {
+    id: "location-action",
+    en: "Location Action",
+    zh: "地點行動",
+    description: "在地點內的冒險模式中可執行的行動，例如移動、互動和探索。",
+    tags: ["Rules", "Maps", "Locations"],
+  },
 ];
