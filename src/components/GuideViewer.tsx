@@ -154,6 +154,16 @@ function scrollToReaderTop() {
   if (typeof window === "undefined") return;
 
   window.requestAnimationFrame(() => {
+    const readerContent = document.getElementById("guide-reader-content");
+
+    if (readerContent) {
+      readerContent.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+      return;
+    }
+
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -551,7 +561,10 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
             </div>
           ) : null}
 
-          <div className="rounded-xl border border-[#a9762f]/50 bg-[#2a241d] p-5 shadow-lg">
+          <div
+            id="guide-reader-content"
+            className="scroll-mt-24 rounded-xl border border-[#a9762f]/50 bg-[#2a241d] p-5 shadow-lg"
+          >
             {contentSections.length > 0 ? (
               contentSections.map((section) => (
                 <GuideSection
