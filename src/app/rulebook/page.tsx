@@ -1,8 +1,26 @@
-﻿import GuideViewer from "@/components/GuideViewer";
+import GuideViewer from "@/components/GuideViewer";
 import { loadRulebookGuide } from "@/data/loadRulebook";
 
-export default async function RulebookPage() {
+type RulebookPageProps = {
+  searchParams?: Promise<{
+    page?: string | string[];
+    section?: string | string[];
+    mode?: string | string[];
+  }>;
+};
+
+function getFirstSearchParam(value?: string | string[]) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function RulebookPage({
+  searchParams,
+}: RulebookPageProps) {
   const rulebookGuide = await loadRulebookGuide();
+  const params = searchParams ? await searchParams : {};
+  const initialPage = getFirstSearchParam(params.page);
+  const initialSectionId = getFirstSearchParam(params.section);
+  const initialShowAll = getFirstSearchParam(params.mode) === "all";
 
   return (
     <main className="min-h-screen bg-[#1c1a17] p-4 text-[#ece3d2] sm:p-6 lg:p-8">
@@ -23,7 +41,13 @@ export default async function RulebookPage() {
           </p>
         </section>
 
-        <GuideViewer sections={rulebookGuide} />
+        <GuideViewer
+          sections={rulebookGuide}
+          basePath="/rulebook"
+          initialPage={initialPage}
+          initialSectionId={initialSectionId}
+          initialShowAll={initialShowAll}
+        />
       </div>
     </main>
   );

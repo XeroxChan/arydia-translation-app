@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { MouseEvent, useEffect, useMemo, useState } from "react";
 import GuideSection from "@/components/GuideSection";
 import type { DisplayMode } from "@/components/BilingualPair";
 import type {
@@ -13,6 +13,10 @@ type StatusFilter = "all" | TranslationStatus;
 
 type GuideViewerProps = {
   sections: GuideSectionType[];
+  basePath?: string;
+  initialPage?: string;
+  initialSectionId?: string;
+  initialShowAll?: boolean;
 };
 
 const filterOptions: { value: StatusFilter; label: string }[] = [
@@ -129,25 +133,56 @@ function countBlockStatuses(block: GuideBlock) {
   return counts;
 }
 
+function resolveInitialSectionId(
+  sections: GuideSectionType[],
+  initialPage?: string,
+  initialSectionId?: string,
+) {
+  const matchedSection =
+    (initialPage
+      ? sections.find((section) => String(section.page) === initialPage)
+      : undefined) ??
+    (initialSectionId
+      ? sections.find((section) => section.id === initialSectionId)
+      : undefined);
+
+  return matchedSection?.id ?? sections[0]?.id ?? "";
+}
+
 function getSectionLabel(section: GuideSectionType) {
   const page = section.page ?? "?";
   return `Page ${page} - ${section.titleZh} \u00b7 ${section.titleEn}`;
 }
 
-function updateUrlForSection(section: GuideSectionType) {
-  if (typeof window === "undefined") return;
-
-  const url = new URL(window.location.href);
+function getSectionHref(
+  basePath: string,
+  section: GuideSectionType,
+  showAllPages = false,
+) {
+  const params = new URLSearchParams();
 
   if (section.page !== undefined) {
-    url.searchParams.set("page", String(section.page));
-    url.searchParams.delete("section");
+    params.set("page", String(section.page));
   } else {
-    url.searchParams.set("section", section.id);
-    url.searchParams.delete("page");
+    params.set("section", section.id);
   }
 
-  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  if (showAllPages) {
+    params.set("mode", "all");
+  }
+
+  return `${basePath}?${params.toString()}`;
+}
+
+function updateUrlForSection(
+  basePath: string,
+  section: GuideSectionType,
+  showAllPages = false,
+) {
+  if (typeof window === "undefined") return;
+
+  const href = getSectionHref(basePath, section, showAllPages);
+  window.history.replaceState(null, "", href);
 }
 
 function scrollToReaderTop() {
@@ -171,39 +206,22 @@ function scrollToReaderTop() {
   });
 }
 
-export default function GuideViewer({ sections }: GuideViewerProps) {
+export default function GuideViewer({
+  sections,
+  basePath = "/rulebook",
+  initialPage,
+  initialSectionId,
+  initialShowAll = false,
+}: GuideViewerProps) {
   const [activeStatus, setActiveStatus] = useState<StatusFilter>("all");
   const [displayMode, setDisplayMode] = useState<DisplayMode>("side-by-side");
   const [search, setSearch] = useState("");
-  const [selectedSectionId, setSelectedSectionId] = useState(
-    sections[0]?.id ?? "",
+  const [selectedSectionId, setSelectedSectionId] = useState(() =>
+    resolveInitialSectionId(sections, initialPage, initialSectionId),
   );
-  const [showAllPages, setShowAllPages] = useState(false);
+  const [showAllPages, setShowAllPages] = useState(initialShowAll);
 
   const normalisedSearch = search.trim().toLowerCase();
-
-  useEffect(() => {
-    if (sections.length === 0) return;
-    if (typeof window === "undefined") return;
-
-    const frameId = window.requestAnimationFrame(() => {
-      const params = new URLSearchParams(window.location.search);
-      const pageParam = params.get("page");
-      const sectionParam = params.get("section");
-
-      const matchedSection =
-        (pageParam
-          ? sections.find((section) => String(section.page) === pageParam)
-          : undefined) ??
-        (sectionParam
-          ? sections.find((section) => section.id === sectionParam)
-          : undefined);
-
-      setSelectedSectionId(matchedSection?.id ?? sections[0].id);
-    });
-
-    return () => window.cancelAnimationFrame(frameId);
-  }, [sections]);
 
   const statusSummary = useMemo(() => {
     return sections.reduce<Record<TranslationStatus, number>>(
@@ -301,17 +319,40 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
       ? [selectedSection]
       : [];
 
-  function selectSection(section: GuideSectionType) {
+  function selectSection(
+    event: MouseEvent<HTMLAnchorElement>,
+    section: GuideSectionType,
+  ) {
+    event.preventDefault();
     setSelectedSectionId(section.id);
     setShowAllPages(false);
-    updateUrlForSection(section);
+    updateUrlForSection(basePath, section, false);
     scrollToReaderTop();
+  }
+
+  function toggleShowAllPages(event: MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+
+    const nextShowAllPages = !showAllPages;
+    setShowAllPages(nextShowAllPages);
+
+    if (selectedSection) {
+      updateUrlForSection(basePath, selectedSection, nextShowAllPages);
+    }
   }
 
   function clearSearchAndFilters() {
     setSearch("");
     setActiveStatus("all");
   }
+
+  const showAllHref = selectedSection
+    ? getSectionHref(basePath, selectedSection, true)
+    : `${basePath}?mode=all`;
+
+  const singlePageHref = selectedSection
+    ? getSectionHref(basePath, selectedSection, false)
+    : basePath;
 
   return (
     <div className="space-y-6">
@@ -444,13 +485,13 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
                 </h2>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setShowAllPages((current) => !current)}
+              <a
+                href={showAllPages ? singlePageHref : showAllHref}
+                onClick={toggleShowAllPages}
                 className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-3 py-1 text-xs text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
               >
                 {showAllPages ? "Single page" : "Show all"}
-              </button>
+              </a>
             </div>
 
             <div className="max-h-[calc(100vh-12rem)] space-y-2 overflow-y-auto pr-1">
@@ -460,11 +501,11 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
                     !showAllPages && selectedSection?.id === section.id;
 
                   return (
-                    <button
+                    <a
                       key={section.id}
-                      type="button"
-                      onClick={() => selectSection(section)}
-                      className={`w-full rounded-lg border px-3 py-2 text-left text-sm transition ${
+                      href={getSectionHref(basePath, section)}
+                      onClick={(event) => selectSection(event, section)}
+                      className={`block w-full rounded-lg border px-3 py-2 text-left text-sm transition ${
                         isActive
                           ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
                           : "border-[#a9762f]/25 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
@@ -479,7 +520,7 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
                       <span className="mt-0.5 block text-xs text-[#b9a988]">
                         {section.titleEn}
                       </span>
-                    </button>
+                    </a>
                   );
                 })
               ) : (
@@ -490,57 +531,60 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
             </div>
           </div>
 
-          <div className="sticky top-20 z-20 rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg lg:hidden">
-            <label
-              htmlFor="mobile-page-select"
-              className="mb-2 block text-xs uppercase tracking-[0.25em] text-[#b9a988]"
-            >
+          <details className="sticky top-20 z-20 rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg lg:hidden">
+            <summary className="cursor-pointer text-xs uppercase tracking-[0.25em] text-[#b9a988]">
               Jump to page
-            </label>
+            </summary>
 
-            <select
-              id="mobile-page-select"
-              value={selectedSection?.id ?? ""}
-              onChange={(event) => {
-                const section = filteredSections.find(
-                  (candidate) => candidate.id === event.target.value,
+            <div className="mt-3 max-h-80 space-y-2 overflow-y-auto pr-1">
+              {filteredSections.map((section) => {
+                const isActive =
+                  !showAllPages && selectedSection?.id === section.id;
+
+                return (
+                  <a
+                    key={section.id}
+                    href={getSectionHref(basePath, section)}
+                    onClick={(event) => selectSection(event, section)}
+                    className={`block rounded-lg border px-3 py-2 text-sm transition ${
+                      isActive
+                        ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
+                        : "border-[#a9762f]/25 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                    }`}
+                  >
+                    {getSectionLabel(section)}
+                  </a>
                 );
+              })}
+            </div>
 
-                if (section) {
-                  selectSection(section);
-                }
-              }}
-              className="w-full rounded-md border border-[#a9762f]/40 bg-[#1c1a17] px-3 py-2 text-sm text-[#ece3d2] focus:border-[#c98f3b] focus:outline-none"
-            >
-              {filteredSections.map((section) => (
-                <option key={section.id} value={section.id}>
-                  {getSectionLabel(section)}
-                </option>
-              ))}
-            </select>
-
-            <button
-              type="button"
-              onClick={() => setShowAllPages((current) => !current)}
-              className="mt-3 w-full rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-3 py-2 text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+            <a
+              href={showAllPages ? singlePageHref : showAllHref}
+              onClick={toggleShowAllPages}
+              className="mt-3 block rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-3 py-2 text-center text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
             >
               {showAllPages ? "Single page mode" : "Show all pages"}
-            </button>
-          </div>
+            </a>
+          </details>
         </aside>
 
         <main className="min-w-0 space-y-4">
           {!showAllPages && selectedSection ? (
             <div className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <button
-                  type="button"
-                  disabled={!previousSection}
-                  onClick={() => previousSection && selectSection(previousSection)}
-                  className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2] disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  &larr; Previous
-                </button>
+                {previousSection ? (
+                  <a
+                    href={getSectionHref(basePath, previousSection)}
+                    onClick={(event) => selectSection(event, previousSection)}
+                    className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                  >
+                    &larr; Previous
+                  </a>
+                ) : (
+                  <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] opacity-40">
+                    &larr; Previous
+                  </span>
+                )}
 
                 <p className="text-center text-sm text-[#b9a988]">
                   Page {selectedSection.page ?? "?"} of{" "}
@@ -549,14 +593,19 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
                     : "?"}
                 </p>
 
-                <button
-                  type="button"
-                  disabled={!nextSection}
-                  onClick={() => nextSection && selectSection(nextSection)}
-                  className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2] disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  Next &rarr;
-                </button>
+                {nextSection ? (
+                  <a
+                    href={getSectionHref(basePath, nextSection)}
+                    onClick={(event) => selectSection(event, nextSection)}
+                    className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                  >
+                    Next &rarr;
+                  </a>
+                ) : (
+                  <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] opacity-40">
+                    Next &rarr;
+                  </span>
+                )}
               </div>
             </div>
           ) : null}
@@ -593,23 +642,33 @@ export default function GuideViewer({ sections }: GuideViewerProps) {
           {!showAllPages && selectedSection ? (
             <div className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <button
-                  type="button"
-                  disabled={!previousSection}
-                  onClick={() => previousSection && selectSection(previousSection)}
-                  className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2] disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  &larr; Previous
-                </button>
+                {previousSection ? (
+                  <a
+                    href={getSectionHref(basePath, previousSection)}
+                    onClick={(event) => selectSection(event, previousSection)}
+                    className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                  >
+                    &larr; Previous
+                  </a>
+                ) : (
+                  <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] opacity-40">
+                    &larr; Previous
+                  </span>
+                )}
 
-                <button
-                  type="button"
-                  disabled={!nextSection}
-                  onClick={() => nextSection && selectSection(nextSection)}
-                  className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2] disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  Next &rarr;
-                </button>
+                {nextSection ? (
+                  <a
+                    href={getSectionHref(basePath, nextSection)}
+                    onClick={(event) => selectSection(event, nextSection)}
+                    className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                  >
+                    Next &rarr;
+                  </a>
+                ) : (
+                  <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] opacity-40">
+                    Next &rarr;
+                  </span>
+                )}
               </div>
             </div>
           ) : null}
