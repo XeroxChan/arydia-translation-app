@@ -343,6 +343,60 @@ src/
     â””â”€â”€ glossary.ts
 ```
 
+## 2026-07-03 - Rulebook content pass and reader navigation upgrade
 
+### Completed today
 
+- Continued the private Rulebook translation workspace through the remaining useful gameplay sections.
+- Added private Rulebook sections for pages 26-34:
+  - Page 26: Foe Turns and Foe Behaviors
+  - Page 27: Foe Targeting and Foe Movement
+  - Page 28: Foe Attacks, Hit Dice, and Exile Armor
+  - Page 29: Exile Turns and Combat Actions
+  - Page 30: KO'd, Surge, Hit Grids, and Exile Weapons
+  - Page 31: Basic Attacks
+  - Page 32: Attack Pattern Details
+  - Page 33: Combat End, Partially Explored Locations, and Meta Rules
+  - Page 34: Save / Load, Difficulty, Reset, and Green Legacy
+- Added/updated public-safe glossary terms for the above rulebook systems.
+- Decided to skip Rulebook page 35 because it is mostly soundtrack, credits, special thanks, and backer acknowledgements.
+- Decided to skip Rulebook page 36 because it is mostly index / quick-reference material rather than core reader content.
+- Improved the Rulebook app UI:
+  - Converted the Rulebook from a long all-pages scroll into a single-page reader by default.
+  - Added a sticky desktop page navigator.
+  - Added a mobile jump-to-page dropdown.
+  - Added Previous / Next navigation buttons.
+  - Added an optional Show all pages toggle.
+  - Added URL support such as /rulebook?page=28.
+  - Preserved search, status filters, translation progress, and display mode controls.
+  - Adjusted Previous / Next scrolling so it jumps to the rulebook content area instead of the very top of the page.
+- Fixed UI text encoding issues in public components where Traditional Chinese labels had become mojibake.
+- Fixed Previous / Next arrow rendering.
+
+### Important decisions
+
+- Private exact/near-exact Rulebook content remains in ignored private data only.
+- Public source files should only contain app logic, UI, public-safe glossary entries, and public-safe schema/dev notes.
+- Page 35 and Page 36 are intentionally not included in the in-app Rulebook reader for now.
+- The Rulebook reader should prioritize practical gameplay navigation over reproducing the physical rulebook layout exactly.
+
+### Files touched today
+
+Private / local-only:
+- private-data/rulebook.private.json
+
+Public-safe:
+- src/components/GuideViewer.tsx
+- src/components/GuideSection.tsx
+- src/components/BilingualPair.tsx
+- src/data/glossary.ts
+- docs/devlog.md
+
+### Next steps
+
+- Review the Rulebook reader in the browser and confirm navigation feels good on both desktop and mobile widths.
+- Check for duplicate or inconsistent glossary terms after the large combat terminology pass.
+- Commit public-safe files only.
+- Do not commit private-data/rulebook.private.json.
+- After the Rulebook reader is stable, consider adding a compact glossary/search panel or cross-links from glossary terms to the relevant Rulebook pages.
 
