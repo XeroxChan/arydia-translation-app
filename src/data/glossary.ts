@@ -27,11 +27,11 @@ export const glossaryData: GlossaryTerm[] = [
     description: "玩家角色稱呼",
     tags: ["Characters"],
   },
-  {
+    {
     id: "path",
     en: "Path",
-    zh: "職業路徑",
-    description: "類似職業 / Class",
+    zh: "職業",
+    description: "角色的職業／Class。用於職業技能、職業物品、職業寶箱、職業卡等。",
     tags: ["Characters"],
   },
   {
@@ -111,28 +111,14 @@ export const glossaryData: GlossaryTerm[] = [
     description: "地圖單位",
     tags: ["Map"],
   },
-  {
-    id: "world-map",
-    en: "World Map",
-    zh: "世界地圖",
-    description: "",
-    tags: ["Map"],
-  },
-  {
+    {
     id: "region",
     en: "Region",
     zh: "地區",
     description: "",
     tags: ["Map"],
   },
-  {
-    id: "rp-role-play-points",
-    en: "RP (Role Play Points)",
-    zh: "角色扮演點數",
-    description: "RP",
-    tags: ["Rules"],
-  },
-  {
+    {
     id: "experience-xp",
     en: "Experience (XP)",
     zh: "經驗值",
@@ -209,14 +195,7 @@ export const glossaryData: GlossaryTerm[] = [
     description: "與 NPC 對話系統",
     tags: ["Rules", "NPC", "Dialogue"],
   },
-  {
-    id: "job-cards",
-    en: "Job cards",
-    zh: "任務卡",
-    description: "編號 JOB-",
-    tags: ["Cards"],
-  },
-  {
+    {
     id: "threat-cards",
     en: "Threat cards",
     zh: "威脅卡",
@@ -237,35 +216,14 @@ export const glossaryData: GlossaryTerm[] = [
     description: "編號 KEY-",
     tags: ["Cards"],
   },
-  {
-    id: "day-cards",
-    en: "Day cards",
-    zh: "日卡",
-    description: "編號 DAY-",
-    tags: ["Cards"],
-  },
-  {
+    {
     id: "event-cards",
     en: "Event cards",
     zh: "事件卡",
     description: "編號 EVT-",
     tags: ["Cards"],
   },
-  {
-    id: "travel-cards",
-    en: "Travel cards",
-    zh: "旅行卡",
-    description: "編號 TRV-",
-    tags: ["Cards", "Travel"],
-  },
-  {
-    id: "rules-cards",
-    en: "Rules cards",
-    zh: "規則卡",
-    description: "編號 REF-",
-    tags: ["Cards", "Rules"],
-  },
-  {
+      {
     id: "point-of-interest-cards",
     en: "Point of Interest cards",
     zh: "探索點卡",
@@ -279,28 +237,21 @@ export const glossaryData: GlossaryTerm[] = [
     description: "每角色 1 張",
     tags: ["Cards", "Characters"],
   },
-  {
+    {
     id: "skill-tree-card",
-    en: "Skill Tree card",
+    en: "Skill Tree Card",
     zh: "技能樹卡",
-    description: "每路徑 1 張",
-    tags: ["Cards", "Skills"],
+    description: "每個職業 1 張。",
+    tags: ["Cards","Skills"],
   },
-  {
+    {
     id: "path-rules-cards",
-    en: "Rules cards",
+    en: "Path Rules Cards",
     zh: "職業規則卡",
-    description: "每路徑 17 張，共 102 張",
-    tags: ["Cards", "Rules", "Path"],
+    description: "每個職業 17 張，共 102 張。",
+    tags: ["Cards","Rules","Path"],
   },
-  {
-    id: "guide-player-role",
-    en: "Guide",
-    zh: "導讀者",
-    description: "負責閱讀故事、解釋玩家選擇並引導遊戲進行的玩家角色。",
-    tags: ["Rules","Role"],
-  },
-  {
+    {
     id: "narrative-text",
     en: "Narrative Text",
     zh: "敘事文字",
@@ -643,12 +594,12 @@ export const glossaryData: GlossaryTerm[] = [
     description: "在流亡者公會花費 XP 提升角色等級、數值、屬性並學習新技能的行動。",
     tags: ["Rules", "Characters", "Progress"],
   },
-  {
+    {
     id: "skill-tree",
     en: "Skill Tree",
     zh: "技能樹",
-    description: "包含選定道路中可學習技能的配件，技能之間可以有先決條件。",
-    tags: ["Rules", "Characters", "Skills"],
+    description: "包含選定職業中可學習技能的配件，技能之間可以有先決條件。",
+    tags: ["Rules","Characters","Skills"],
   },
   {
     id: "skill-tile",
@@ -713,40 +664,40 @@ export const glossaryData: GlossaryTerm[] = [
     description: "放置行動標記、腰帶物品、持有物品、穿戴物品、HP/MP/SP 追蹤和 RP 追蹤的玩家配件。",
     tags: ["Rules", "Characters", "Components"],
   },
-  {
+    {
     id: "pathless-item",
     en: "Pathless Item",
     zh: "無職業物品",
-    description: "任何道路都可以使用的通用物品，以棕色 A 圖示識別。",
-    tags: ["Rules", "Items"],
+    description: "任何職業都可以使用的通用物品，以棕色 A 圖示識別。",
+    tags: ["Rules","Items"],
   },
-  {
+    {
     id: "path-item",
     en: "Path Item",
     zh: "職業物品",
-    description: "特定道路專屬的物品，只能由該道路的流亡者使用。",
-    tags: ["Rules", "Items", "Paths"],
+    description: "特定職業專屬的物品，只能由該職業的流亡者使用。",
+    tags: ["Rules","Items","Paths"],
   },
-  {
+    {
     id: "pathless-chest",
     en: "Pathless Chest",
     zh: "無職業寶箱",
-    description: "用來隨機抽取無道路物品的寶箱。",
-    tags: ["Rules", "Items", "Chests"],
+    description: "用來隨機抽取無職業物品的寶箱。",
+    tags: ["Rules","Items","Chests"],
   },
-  {
+    {
     id: "path-chest",
     en: "Path Chest",
     zh: "職業寶箱",
-    description: "用來讓每名流亡者從自己對應道路寶箱中隨機獲得物品的寶箱。",
-    tags: ["Rules", "Items", "Chests", "Paths"],
+    description: "用來讓每名流亡者從自己對應職業寶箱中隨機獲得物品的寶箱。",
+    tags: ["Rules","Items","Chests","Paths"],
   },
-  {
+    {
     id: "rules-card",
     en: "Rules Card",
     zh: "規則卡",
-    description: "與技能或物品對應的參考卡，其文字優先於技能牌上的簡略文字。",
-    tags: ["Rules", "Cards", "Items", "Skills"],
+    description: "編號 REF-。與技能或物品對應的參考卡，其文字優先於技能牌上的簡略文字。",
+    tags: ["Rules","Cards","Items","Skills"],
   },
   {
     id: "path-card",
@@ -804,12 +755,12 @@ export const glossaryData: GlossaryTerm[] = [
     description: "放在卡盒中、用來儲存不想或無法攜帶物品的無上限空間。",
     tags: ["Rules", "Items", "Equipment"],
   },
-  {
+    {
     id: "guide",
     en: "Guide",
     zh: "導讀者",
-    description: "當前主動玩家左手邊的玩家，負責為其他玩家抽取並朗讀卡牌或地圖。",
-    tags: ["Rules", "Roleplay"],
+    description: "主動玩家左手邊、負責抽取並朗讀卡牌／地圖、引導故事與解釋玩家選擇的玩家。",
+    tags: ["Rules","Roleplay"],
   },
   {
     id: "active-player",
@@ -818,12 +769,12 @@ export const glossaryData: GlossaryTerm[] = [
     description: "目前正在執行行動的玩家。",
     tags: ["Rules", "Turns"],
   },
-  {
+    {
     id: "roleplay-points",
     en: "Roleplay Points",
     zh: "角色扮演點數",
-    description: "擔任導讀者時可獲得的點數，可用於將屬性檢定結果提高 +3。",
-    tags: ["Rules", "Roleplay", "Checks"],
+    description: "又稱 RP。擔任導讀者時可獲得的點數，可用於將屬性檢定結果提高 +3。",
+    tags: ["Rules","Roleplay","Checks"],
   },
   {
     id: "rp-track",
@@ -888,12 +839,12 @@ export const glossaryData: GlossaryTerm[] = [
     description: "擲骰本身顯示 20，使檢定自動成功並根據場合獲得額外好處。",
     tags: ["Rules", "Checks"],
   },
-  {
+    {
     id: "job-card",
     en: "Job Card",
     zh: "工作卡",
-    description: "隊伍可從啟用工作牌堆中選擇的任務卡，最多同時只能有一個目前工作。",
-    tags: ["Rules", "Cards", "Progress"],
+    description: "編號 JOB-。隊伍可從啟用工作牌堆中選擇的任務卡，最多同時只能有一個目前工作。",
+    tags: ["Rules","Cards","Progress"],
   },
   {
     id: "current-job",
@@ -923,12 +874,12 @@ export const glossaryData: GlossaryTerm[] = [
     description: "要求追蹤並擊敗特定敵人，再前往指定地點領取獎勵的工作類型。",
     tags: ["Rules", "Jobs", "Combat"],
   },
-  {
+    {
     id: "day-card",
     en: "Day Card",
     zh: "天數卡",
-    description: "休息或其他規則指示時抽取的卡，用來推進戰役中的天數和特殊規則。",
-    tags: ["Rules", "Cards", "Progress"],
+    description: "編號 DAY-。休息或其他規則指示時抽取的卡，用來推進戰役中的天數和特殊規則。",
+    tags: ["Rules","Cards","Progress"],
   },
   {
     id: "day-discard-pile",
@@ -979,14 +930,14 @@ export const glossaryData: GlossaryTerm[] = [
     description: "流亡者可裝備在角色名稱中的稱號標記。",
     tags: ["Rules", "Characters", "Components"],
   },
-  {
+    {
     id: "rank",
     en: "Rank",
     zh: "階級",
-    description: "流亡者道路或角色身分相關的階級標記。",
-    tags: ["Rules", "Characters", "Paths"],
+    description: "流亡者職業或角色身分相關的階級標記。",
+    tags: ["Rules","Characters","Paths"],
   },
-  {
+    {
     id: "worldmap",
     en: "Worldmap",
     zh: "世界地圖",
@@ -1007,11 +958,11 @@ export const glossaryData: GlossaryTerm[] = [
     description: "世界地圖六角格邊上的圖示，用來判斷相鄰六角格是否相連以及旅行時使用哪種地形規則。",
     tags: ["Rules","Worldmap","Travel"],
   },
-  {
+    {
     id: "travel-card",
     en: "Travel Card",
     zh: "旅行卡",
-    description: "旅行時抽取的卡牌，用來代表旅途中發生的挑戰或遭遇。",
+    description: "編號 TRV-。旅行時抽取的卡牌，用來代表旅途中發生的挑戰或遭遇。",
     tags: ["Rules","Cards","Travel"],
   },
   {
@@ -1105,11 +1056,11 @@ export const glossaryData: GlossaryTerm[] = [
     description: "讓隊伍按照物品 Kae 價值賣出物品的城鎮行動。",
     tags: ["Rules","Town","Items"],
   },
-  {
+    {
     id: "armorer",
     en: "Armorer",
     zh: "護甲商",
-    description: "販售無道路物品，並可讓隊伍買回先前賣出物品的城鎮行動。",
+    description: "販售無職業物品，並可讓隊伍買回先前賣出物品的城鎮行動。",
     tags: ["Rules","Town","Items"],
   },
   {
