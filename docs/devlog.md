@@ -24,6 +24,10 @@
   - Adjusted Previous / Next scrolling so it jumps to the rulebook content area instead of the very top of the page.
 - Fixed UI text encoding issues in public components where Traditional Chinese labels had become mojibake.
 - Fixed Previous / Next arrow rendering.
+- Fixed iPad local-network use:
+  - Confirmed the desktop can serve the private Rulebook JSON to iPad Safari over the local network.
+  - Added/updated local dev origin settings so client-side buttons work from iPad.
+  - Converted Rulebook page navigation controls to real links where useful, so Previous / Next and page navigation remain reliable on iPad.
 
 ### Important decisions
 
@@ -40,15 +44,17 @@ Private / local-only:
 
 Public-safe:
 
+- src/app/rulebook/page.tsx
 - src/components/GuideViewer.tsx
 - src/components/GuideSection.tsx
 - src/components/BilingualPair.tsx
 - src/data/glossary.ts
+- next.config.ts / next.config.*
 - docs/devlog.md
 
 ### Next steps
 
-- Review the Rulebook reader in the browser and confirm navigation feels good on both desktop and mobile widths.
+- Review the Rulebook reader in the browser and confirm navigation feels good on desktop, iPad, and mobile widths.
 - Check for duplicate or inconsistent glossary terms after the large combat terminology pass.
 - Commit public-safe files only.
 - Do not commit private-data/rulebook.private.json.
