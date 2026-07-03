@@ -5,16 +5,11 @@
 ### Completed today
 
 - Continued the private Rulebook translation workspace through the remaining useful gameplay sections.
-- Added private Rulebook sections for pages 26-34:
-  - Page 26: Foe Turns and Foe Behaviors
-  - Page 27: Foe Targeting and Foe Movement
-  - Page 28: Foe Attacks, Hit Dice, and Exile Armor
-  - Page 29: Exile Turns and Combat Actions
-  - Page 30: KO'd, Surge, Hit Grids, and Exile Weapons
-  - Page 31: Basic Attacks
-  - Page 32: Attack Pattern Details
-  - Page 33: Combat End, Partially Explored Locations, and Meta Rules
-  - Page 34: Save / Load, Difficulty, Reset, and Green Legacy
+- Added private Rulebook sections for pages 1-34:
+  - Pages 1-5: Welcome, components, character setup, play space setup, and ready-to-play setup
+  - Pages 6-15: Exiles, skills, equipment, items, universal rules, index system, card/text types, jobs, day cards, adventure, Squills, and dossiers
+  - Pages 16-25: Worldmaps, travel, town/guild actions, locations, maps, movement, borders, range, ability types, targeting, threat, combo, foes, threat cards, AI cards, and foe components
+  - Pages 26-34: Foe turns, foe targeting, foe attacks, exile turns, KO'd, Surge, hit grids, basic attacks, attack patterns, combat end, save/load, difficulty, reset, and Green Legacy
 - Added/updated public-safe glossary terms for the above rulebook systems.
 - Decided to skip Rulebook page 35 because it is mostly soundtrack, credits, special thanks, and backer acknowledgements.
 - Decided to skip Rulebook page 36 because it is mostly index / quick-reference material rather than core reader content.
