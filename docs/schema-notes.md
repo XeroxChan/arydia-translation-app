@@ -4,6 +4,8 @@ This document records public-safe database design notes for the Arydia bilingual
 
 Do not copy full rulebook text, full card text, story text, map text, scans, OCR output, or full translations into this file.
 
+These notes are recorded in development-pass order, not strict rulebook page order.
+
 ## Purpose
 
 The rulebook translation workflow is also a schema discovery workflow. As rulebook sections are translated privately, this file records abstract design conclusions that can safely be committed to the public repository.
@@ -82,66 +84,57 @@ Potential rulebook translation fields:
 - translation status
 - schema notes derived from the section
 
+## Rulebook pass 3: Index system, states, and persistent card locations
 
-## Rulebook pass 1: Text Types and branching card text
-
-Source focus: rulebook text-type and early card-type explanations.
+Source focus: component IDs, component states, Active / Inactive decks, state changes, back-to-index handling, banished cards, Party Inventory, and cleared / uncleared card return behavior.
 
 ### Schema conclusions
 
-Cards and rulebook sections should not store all text as one undifferentiated field. Arydia uses different text roles, and those roles affect both gameplay and spoiler handling.
+Cards, maps, and hexes should separate their stable base ID from their current state.
 
-Recommended text block categories:
+Potential fields:
 
-- narrative
-- rules
-- roleplay
-- verbal
-- actionDescription
-- choice
-- response
-- nestedChoice
-- nestedResponse
-- townGuildAction
-- fallbackChoice
+- baseId
+- code
+- type
+- state
+- currentState
+- deckZone
+- campaignZone
+- progressStatus
 
-### Branching cards
+The app should not treat encountered, active, cleared, banished, and party inventory as the same thing. These are separate campaign-state concepts.
 
-NPC and POI style cards likely need structured branching data.
+Potential campaign progress fields:
 
-Potential structure:
+- encounteredIds
+- activeStateByBaseId
+- clearedIds
+- unclearedIds
+- banishedIds
+- partyInventoryIds
+- savedHexId
 
-- front narrative
-- visible choice prompts
-- response sections keyed by choice
-- fallback / any-other-topic response
-- nested choices inside responses
-- nested response sections
-- checks inside responses
-- rewards or draw instructions
-- cleared / uncleared return behavior
+### Active / Inactive model
 
-### Event cards
-
-Event cards may be more linear than NPC or POI interactions, but they still need separate block types.
+For stateful components, only one state for a base ID should be active at a time. Other states belong to inactive storage until a state-change instruction makes them active.
 
 Potential structure:
 
-- title
-- narrative blocks
-- rules blocks
-- optional prompt/choice blocks
-- resolution instruction
-- banish / return / clear behavior
+- `activeStateByBaseId[baseId] = state`
+- inactive states remain available content records, but are hidden from normal draw/search flow unless spoiler guard is disabled.
 
-### Translation implications
+### Banished and Party Inventory
 
-Translation status should be tracked per block, not only per whole card. A card may have reviewed title text but draft response text.
+Banished cards are not merely inactive. They are removed from normal future use unless a rule explicitly restores them.
 
-### Spoiler implications
+Party Inventory is also separate from Active / Inactive decks. Cards in Party Inventory are currently held by the party and may later trigger other card draws or state changes.
 
-Choice labels, titles, and response headings can be spoilers. Safe metadata should remain limited to card type, code, state, and encounter/progress status unless the card has been encountered or spoiler guard is disabled.
+### Cleared / Uncleared
 
+Cleared is a progress state, not just an encounter state. A card or map can be encountered but not cleared.
+
+For spoiler-safe UI, public metadata can show whether something is encountered or cleared, but card text, choices, triggers, and rewards should remain spoiler-protected until encountered or explicitly revealed.
 
 ## Rulebook pass 2: Locations, pointers, and interactions
 
@@ -233,4 +226,63 @@ For now, the app only tracks encountered card IDs in browser storage. Later, cam
 ### Spoiler implications
 
 Safe metadata can include card type, code, state, and encountered/cleared status. Pointer labels, NPC names, POI titles, choices, and responses may all be spoilers depending on context.
+
+## Rulebook pass 1: Text Types and branching card text
+
+Source focus: rulebook text-type and early card-type explanations.
+
+### Schema conclusions
+
+Cards and rulebook sections should not store all text as one undifferentiated field. Arydia uses different text roles, and those roles affect both gameplay and spoiler handling.
+
+Recommended text block categories:
+
+- narrative
+- rules
+- roleplay
+- verbal
+- actionDescription
+- choice
+- response
+- nestedChoice
+- nestedResponse
+- townGuildAction
+- fallbackChoice
+
+### Branching cards
+
+NPC and POI style cards likely need structured branching data.
+
+Potential structure:
+
+- front narrative
+- visible choice prompts
+- response sections keyed by choice
+- fallback / any-other-topic response
+- nested choices inside responses
+- nested response sections
+- checks inside responses
+- rewards or draw instructions
+- cleared / uncleared return behavior
+
+### Event cards
+
+Event cards may be more linear than NPC or POI interactions, but they still need separate block types.
+
+Potential structure:
+
+- title
+- narrative blocks
+- rules blocks
+- optional prompt/choice blocks
+- resolution instruction
+- banish / return / clear behavior
+
+### Translation implications
+
+Translation status should be tracked per block, not only per whole card. A card may have reviewed title text but draft response text.
+
+### Spoiler implications
+
+Choice labels, titles, and response headings can be spoilers. Safe metadata should remain limited to card type, code, state, and encounter/progress status unless the card has been encountered or spoiler guard is disabled.
 
