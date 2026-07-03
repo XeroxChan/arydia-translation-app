@@ -496,4 +496,18 @@ export const glossaryData: GlossaryTerm[] = [
   description: "隊伍共同持有的卡牌，例如部分關鍵卡與任務相關物件。",
   tags: ["Cards", "Party", "Progress"],
 },
+  {
+    id: "trigger-text",
+    en: "Trigger Text",
+    zh: "觸發文字",
+    description: "出現在其他卡牌或配件上的獨特文字，用來觸發關鍵卡的指示。",
+    tags: ["Cards", "Rules", "Progress"],
+  },
+  {
+    id: "splay-text",
+    en: "Splay Text",
+    zh: "展疊文字",
+    description: "關鍵卡底部倒置的觸發文字副本，用來追蹤隊伍物品欄中的觸發條件。",
+    tags: ["Cards", "Rules", "Progress"],
+  },
 ];
