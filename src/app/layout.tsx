@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-Hant">
-      <body className="bg-[#1c1a17]">
+      <body className="bg-[var(--arydia-bg)]">
         <AppHeader />
         {children}
       </body>

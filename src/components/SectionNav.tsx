@@ -10,8 +10,8 @@ function getPageLabel(section: GuideSection) {
 
 export default function SectionNav({ sections }: SectionNavProps) {
   return (
-    <nav className="mb-8 rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
-      <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+    <nav className="mb-8 rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
+      <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
         Contents
       </p>
 
@@ -20,11 +20,11 @@ export default function SectionNav({ sections }: SectionNavProps) {
           <a
             key={section.id}
             href={`#${section.id}`}
-            className="rounded-full border border-[#a9762f]/30 bg-[#1c1a17] px-3 py-1.5 text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+            className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-bg)] px-3 py-1.5 text-sm text-[var(--arydia-muted)] transition hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
           >
-            <span className="mr-1 text-[#c98f3b]">{section.titleZh}</span>
+            <span className="mr-1 text-[var(--arydia-primary)]">{section.titleZh}</span>
             <span className="mr-1 text-xs opacity-75">{section.titleEn}</span>
-            <span className="text-xs text-[#b9a988]/70">
+            <span className="text-xs text-[rgb(var(--arydia-muted-rgb)/0.7)]">
               ({getPageLabel(section)})
             </span>
           </a>

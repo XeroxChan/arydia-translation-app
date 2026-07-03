@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useRef, useState, type ChangeEvent } from "react";
 
@@ -61,8 +61,8 @@ const statusLabels: Record<TranslationStatus, string> = {
 function filterButtonClass(isActive: boolean) {
   return `rounded-full border px-3 py-1.5 text-sm transition ${
     isActive
-      ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
-      : "border-[#a9762f]/30 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+      ? "border-[var(--arydia-primary)] bg-[var(--arydia-surface-raised)] text-[var(--arydia-strong)]"
+      : "border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-bg)] text-[var(--arydia-muted)] hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
   }`;
 }
 
@@ -183,59 +183,59 @@ function BilingualCardField({
   showTranslationStatus: boolean;
 }) {
   const statusBadge = showTranslationStatus ? (
-    <span className="rounded-full border border-[#a9762f]/40 px-2 py-0.5 text-xs text-[#c98f3b]">
+    <span className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] px-2 py-0.5 text-xs text-[var(--arydia-primary)]">
       {statusLabels[field.status]}
     </span>
   ) : null;
 
   if (displayMode === "en-only") {
     return (
-      <div className="rounded-lg border border-[#a9762f]/40 bg-[#1c1a17] p-4">
+      <div className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] p-4">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+          <p className="text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             {label}
           </p>
           {statusBadge}
         </div>
-        <p className="text-sm leading-6 text-[#ece3d2]">{field.en}</p>
+        <p className="text-sm leading-6 text-[var(--arydia-text)]">{field.en}</p>
       </div>
     );
   }
 
   if (displayMode === "zh-only") {
     return (
-      <div className="rounded-lg border border-[#a9762f]/40 bg-[#3a2b1c]/60 p-4">
+      <div className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[rgb(var(--arydia-surface-raised-rgb)/0.6)] p-4">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+          <p className="text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             繁體中文
           </p>
           {statusBadge}
         </div>
-        <p className="text-sm leading-6 text-[#fff6df]">{field.zh}</p>
+        <p className="text-sm leading-6 text-[var(--arydia-strong)]">{field.zh}</p>
       </div>
     );
   }
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <div className="rounded-lg border border-[#a9762f]/40 bg-[#1c1a17] p-4">
+      <div className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] p-4">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+          <p className="text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             {label}
           </p>
           {statusBadge}
         </div>
-        <p className="text-sm leading-6 text-[#ece3d2]">{field.en}</p>
+        <p className="text-sm leading-6 text-[var(--arydia-text)]">{field.en}</p>
       </div>
 
-      <div className="rounded-lg border border-[#a9762f]/40 bg-[#3a2b1c]/60 p-4">
+      <div className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[rgb(var(--arydia-surface-raised-rgb)/0.6)] p-4">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+          <p className="text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             繁體中文
           </p>
           {statusBadge}
         </div>
-        <p className="text-sm leading-6 text-[#fff6df]">{field.zh}</p>
+        <p className="text-sm leading-6 text-[var(--arydia-strong)]">{field.zh}</p>
       </div>
     </div>
   );
@@ -252,36 +252,36 @@ function TranslationProgressBox({
     cardStatusSummary.approved;
 
   return (
-    <div className="rounded-lg border border-[#a9762f]/30 bg-[#1c1a17] p-4">
-      <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+    <div className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-bg)] p-4">
+      <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
         Translation Progress 翻譯進度
       </p>
 
       <div className="grid gap-3 sm:grid-cols-4">
         <div>
-          <p className="text-xs text-[#b9a988]">Tracked fields 欄位</p>
-          <p className="mt-1 text-2xl font-semibold text-[#c98f3b]">
+          <p className="text-xs text-[var(--arydia-muted)]">Tracked fields 欄位</p>
+          <p className="mt-1 text-2xl font-semibold text-[var(--arydia-primary)]">
             {totalTrackedFields}
           </p>
         </div>
 
         <div>
-          <p className="text-xs text-[#b9a988]">Draft 草稿</p>
-          <p className="mt-1 text-2xl font-semibold text-[#c98f3b]">
+          <p className="text-xs text-[var(--arydia-muted)]">Draft 草稿</p>
+          <p className="mt-1 text-2xl font-semibold text-[var(--arydia-primary)]">
             {cardStatusSummary.draft}
           </p>
         </div>
 
         <div>
-          <p className="text-xs text-[#b9a988]">Reviewed 已檢查</p>
-          <p className="mt-1 text-2xl font-semibold text-[#c98f3b]">
+          <p className="text-xs text-[var(--arydia-muted)]">Reviewed 已檢查</p>
+          <p className="mt-1 text-2xl font-semibold text-[var(--arydia-primary)]">
             {cardStatusSummary.reviewed}
           </p>
         </div>
 
         <div>
-          <p className="text-xs text-[#b9a988]">Approved 已確認</p>
-          <p className="mt-1 text-2xl font-semibold text-[#c98f3b]">
+          <p className="text-xs text-[var(--arydia-muted)]">Approved 已確認</p>
+          <p className="mt-1 text-2xl font-semibold text-[var(--arydia-primary)]">
             {cardStatusSummary.approved}
           </p>
         </div>
@@ -433,24 +433,24 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4">
-      <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
-        <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+      <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
+        <p className="text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
           Card Library
         </p>
-        <h1 className="mt-2 text-3xl font-bold text-[#fff6df]">
+        <h1 className="mt-2 text-3xl font-bold text-[var(--arydia-strong)]">
           Arydia Card Index 卡牌索引
         </h1>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-[#b9a988]">
+        <p className="mt-3 max-w-3xl text-sm leading-6 text-[var(--arydia-muted)]">
           This page supports two workflows: spoiler-safe play tracking and
           translation review. Play mode hides translation workflow information by
           default.
         </p>
       </section>
 
-      <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+      <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
         <label
           htmlFor="card-search"
-          className="mb-2 block text-xs uppercase tracking-[0.25em] text-[#b9a988]"
+          className="mb-2 block text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]"
         >
           Search Cards 搜尋卡牌
         </label>
@@ -461,18 +461,18 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search English, 中文, tags, codes..."
-          className="w-full rounded-md border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-[#ece3d2] placeholder:text-[#b9a988]/60 focus:border-[#c98f3b] focus:outline-none"
+          className="w-full rounded-md border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-4 py-2 text-[var(--arydia-text)] placeholder:text-[rgb(var(--arydia-muted-rgb)/0.6)] focus:border-[var(--arydia-primary)] focus:outline-none"
         />
 
-        <p className="mt-3 text-xs leading-5 text-[#b9a988]/80">
+        <p className="mt-3 text-xs leading-5 text-[rgb(var(--arydia-muted-rgb)/0.8)]">
           Spoiler-safe search only checks code/type metadata for unencountered
           cards while spoiler hiding is active.
         </p>
       </section>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+        <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             Workflow Mode 工作模式
           </p>
 
@@ -489,14 +489,14 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
             ))}
           </div>
 
-          <p className="mt-4 text-sm text-[#b9a988]">
+          <p className="mt-4 text-sm text-[var(--arydia-muted)]">
             Play mode hides translation status. Review mode shows translation
             progress and draft/review badges.
           </p>
         </section>
 
-        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+        <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             Display Mode 顯示模式
           </p>
 
@@ -513,14 +513,14 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
             ))}
           </div>
 
-          <p className="mt-4 text-sm text-[#b9a988]">
+          <p className="mt-4 text-sm text-[var(--arydia-muted)]">
             Use Chinese-only during play, or side-by-side while reviewing
             translation.
           </p>
         </section>
 
-        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+        <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             Card Type Filter 卡牌類型篩選
           </p>
 
@@ -537,13 +537,13 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
             ))}
           </div>
 
-          <p className="mt-4 text-sm text-[#b9a988]">
+          <p className="mt-4 text-sm text-[var(--arydia-muted)]">
             Showing {filteredCards.length} of {cards.length} entries.
           </p>
         </section>
 
-        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+        <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             Encounter Filter 遇到狀態篩選
           </p>
 
@@ -560,13 +560,13 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
             ))}
           </div>
 
-          <p className="mt-4 text-sm text-[#b9a988]">
+          <p className="mt-4 text-sm text-[var(--arydia-muted)]">
             Progress is saved only in this browser.
           </p>
         </section>
 
-        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg lg:col-span-2">
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+        <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg lg:col-span-2">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             Spoiler Guard 劇透保護
           </p>
 
@@ -586,14 +586,14 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
           <button
             type="button"
             onClick={handleResetProgress}
-            className="mt-4 rounded-full border border-red-400/40 bg-[#1c1a17] px-3 py-1.5 text-sm text-red-200 transition hover:border-red-300 hover:text-red-100"
+            className="mt-4 rounded-full border border-red-400/40 bg-[var(--arydia-bg)] px-3 py-1.5 text-sm text-red-200 transition hover:border-red-300 hover:text-red-100"
           >
             Reset encounter progress 重設遇到紀錄
           </button>
         </section>
 
-        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg lg:col-span-2">
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+        <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg lg:col-span-2">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             Progress Backup
           </p>
 
@@ -623,7 +623,7 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
             onChange={handleImportProgressFile}
           />
 
-          <p className="mt-4 text-sm leading-6 text-[#b9a988]">
+          <p className="mt-4 text-sm leading-6 text-[var(--arydia-muted)]">
             Backup files only contain encountered card IDs. They do not contain
             card text, translations, or private Arydia content.
           </p>
@@ -635,23 +635,23 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
           showTranslationWorkflow ? "lg:grid-cols-6" : "lg:grid-cols-3"
         }`}
       >
-        <div className="rounded-lg border border-[#a9762f]/30 bg-[#2a241d] p-4">
-          <p className="text-sm text-[#b9a988]">Total cards 總卡牌</p>
-          <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
+        <div className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-surface)] p-4">
+          <p className="text-sm text-[var(--arydia-muted)]">Total cards 總卡牌</p>
+          <p className="mt-2 text-3xl font-semibold text-[var(--arydia-primary)]">
             {cards.length}
           </p>
         </div>
 
-        <div className="rounded-lg border border-[#a9762f]/30 bg-[#2a241d] p-4">
-          <p className="text-sm text-[#b9a988]">Encountered 已遇到</p>
-          <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
+        <div className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-surface)] p-4">
+          <p className="text-sm text-[var(--arydia-muted)]">Encountered 已遇到</p>
+          <p className="mt-2 text-3xl font-semibold text-[var(--arydia-primary)]">
             {encounteredCardsInLibrary}
           </p>
         </div>
 
-        <div className="rounded-lg border border-[#a9762f]/30 bg-[#2a241d] p-4">
-          <p className="text-sm text-[#b9a988]">Hidden / New 未遇到</p>
-          <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
+        <div className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-surface)] p-4">
+          <p className="text-sm text-[var(--arydia-muted)]">Hidden / New 未遇到</p>
+          <p className="mt-2 text-3xl font-semibold text-[var(--arydia-primary)]">
             {unencounteredCardsInLibrary}
           </p>
         </div>
@@ -661,10 +661,10 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
             (status) => (
               <div
                 key={status}
-                className="rounded-lg border border-[#a9762f]/30 bg-[#2a241d] p-4"
+                className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-surface)] p-4"
               >
-                <p className="text-sm text-[#b9a988]">{statusLabels[status]}</p>
-                <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
+                <p className="text-sm text-[var(--arydia-muted)]">{statusLabels[status]}</p>
+                <p className="mt-2 text-3xl font-semibold text-[var(--arydia-primary)]">
                   {statusSummary[status]}
                 </p>
               </div>
@@ -673,7 +673,7 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
       </section>
 
       {!isProgressLoaded && (
-        <p className="text-sm text-[#b9a988]">Loading encounter progress...</p>
+        <p className="text-sm text-[var(--arydia-muted)]">Loading encounter progress...</p>
       )}
 
       <section className="space-y-4">
@@ -693,11 +693,11 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
             return (
               <article
                 key={card.id}
-                className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-5 shadow-lg"
+                className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-5 shadow-lg"
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+                    <p className="text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
                       {typeDefinition?.code ?? card.type.toUpperCase()} ·{" "}
                       {cardTypeLabels[card.type]}
                       {card.code ? ` · ${card.code}` : ""}
@@ -706,23 +706,23 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
 
                     {shouldHideDetails ? (
                       <>
-                        <h2 className="mt-2 text-2xl font-semibold text-[#fff6df]">
+                        <h2 className="mt-2 text-2xl font-semibold text-[var(--arydia-strong)]">
                           Spoiler-protected card 已隱藏卡牌
                         </h2>
-                        <p className="mt-1 text-sm text-[#b9a988]">
+                        <p className="mt-1 text-sm text-[var(--arydia-muted)]">
                           Safe label: {safeCardLabel}
                         </p>
                       </>
                     ) : (
                       <>
                         {displayMode !== "zh-only" && (
-                          <h2 className="mt-2 text-2xl font-semibold text-[#fff6df]">
+                          <h2 className="mt-2 text-2xl font-semibold text-[var(--arydia-strong)]">
                             {card.title.en}
                           </h2>
                         )}
 
                         {displayMode !== "en-only" && (
-                          <p className="mt-1 text-xl font-semibold text-[#c98f3b]">
+                          <p className="mt-1 text-xl font-semibold text-[var(--arydia-primary)]">
                             {card.title.zh}
                           </p>
                         )}
@@ -731,7 +731,7 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
                   </div>
 
                   <div className="flex flex-col items-start gap-2 sm:items-end">
-                    <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-3 py-1 text-xs text-[#b9a988]">
+                    <span className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-3 py-1 text-xs text-[var(--arydia-muted)]">
                       {encountered
                         ? "Encountered 已遇到"
                         : "Not encountered 未遇到"}
@@ -746,8 +746,8 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
 
                 {shouldHideDetails ? (
                   <div className="mt-4 space-y-4">
-                    <div className="rounded-lg border border-[#a9762f]/30 bg-[#1c1a17] p-4">
-                      <p className="text-sm leading-6 text-[#b9a988]">
+                    <div className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-bg)] p-4">
+                      <p className="text-sm leading-6 text-[var(--arydia-muted)]">
                         This card has not been marked as encountered, so its
                         title, story text, translation text, tags, and notes are
                         hidden.
@@ -797,7 +797,7 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
                       {card.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-full border border-[#a9762f]/30 bg-[#1c1a17] px-2.5 py-1 text-xs text-[#b9a988]"
+                          className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-bg)] px-2.5 py-1 text-xs text-[var(--arydia-muted)]"
                         >
                           {tag}
                         </span>
@@ -805,7 +805,7 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
                     </div>
 
                     {card.notes && (
-                      <p className="mt-4 text-xs leading-5 text-[#b9a988]/80">
+                      <p className="mt-4 text-xs leading-5 text-[rgb(var(--arydia-muted-rgb)/0.8)]">
                         Note: {card.notes}
                       </p>
                     )}
@@ -815,7 +815,7 @@ export default function CardLibrary({ cards }: CardLibraryProps) {
             );
           })
         ) : (
-          <div className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-6 text-center text-[#b9a988]">
+          <div className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-6 text-center text-[var(--arydia-muted)]">
             No card entries match your current search, card type, or encounter
             filter.
           </div>

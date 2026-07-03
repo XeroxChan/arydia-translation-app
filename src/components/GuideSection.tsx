@@ -12,11 +12,11 @@ export default function GuideSection({
 }: GuideSectionProps) {
   return (
     <section id={section.id} className="mb-10 scroll-mt-24 last:mb-0">
-      <p className="mb-2 text-xs uppercase tracking-[0.2em] text-[#b9a988]">
+      <p className="mb-2 text-xs uppercase tracking-[0.2em] text-[var(--arydia-muted)]">
         Page {section.page}
       </p>
 
-      <h2 className="mb-4 border-b border-[#a9762f]/50 pb-2 text-2xl font-bold text-[#c98f3b]">
+      <h2 className="mb-4 border-b border-[rgb(var(--arydia-border-rgb)/0.5)] pb-2 text-2xl font-bold text-[var(--arydia-primary)]">
         {section.titleZh}
         {" \u00b7 "}
         {section.titleEn}

@@ -1,8 +1,47 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #111713;
+  --foreground: #f2ead7;
+
+  --arydia-bg: #111713;
+  --arydia-bg-rgb: 17 23 19;
+
+  --arydia-surface: #1b241c;
+  --arydia-surface-rgb: 27 36 28;
+
+  --arydia-surface-raised: #263021;
+  --arydia-surface-raised-rgb: 38 48 33;
+
+  --arydia-surface-hover: #30402a;
+  --arydia-surface-hover-rgb: 48 64 42;
+
+  --arydia-border: #8a6535;
+  --arydia-border-rgb: 138 101 53;
+
+  --arydia-primary: #c79a45;
+  --arydia-primary-rgb: 199 154 69;
+
+  --arydia-highlight: #e3c16f;
+  --arydia-highlight-rgb: 227 193 111;
+
+  --arydia-text: #f2ead7;
+  --arydia-text-rgb: 242 234 215;
+
+  --arydia-muted: #b8ad91;
+  --arydia-muted-rgb: 184 173 145;
+
+  --arydia-strong: #fff6df;
+  --arydia-strong-rgb: 255 246 223;
+
+  --arydia-magic: #4f8f83;
+  --arydia-magic-rgb: 79 143 131;
+
+  --arydia-danger: #9a4f3f;
+  --arydia-danger-rgb: 154 79 63;
+
+  --arydia-danger-text: #e0b8a8;
+  --arydia-danger-text-rgb: 224 184 168;
 }
 
 @theme inline {
@@ -12,15 +51,21 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--arydia-bg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgb(var(--arydia-magic-rgb) / 0.16), transparent 34rem),
+    radial-gradient(circle at top right, rgb(var(--arydia-primary-rgb) / 0.12), transparent 30rem),
+    linear-gradient(180deg, var(--arydia-bg) 0%, #0b100d 100%);
+  color: var(--arydia-text);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: rgb(var(--arydia-primary-rgb) / 0.35);
+  color: var(--arydia-strong);
 }

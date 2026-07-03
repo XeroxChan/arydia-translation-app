@@ -6,13 +6,13 @@ import { glossaryData } from "@/data/glossary";
  */
 export default function GlossaryPage() {
   return (
-    <main className="min-h-screen bg-[#1c1a17] p-4 text-[#ece3d2] sm:p-6 lg:p-8">
+    <main className="min-h-screen bg-[var(--arydia-bg)] p-4 text-[var(--arydia-text)] sm:p-6 lg:p-8">
       <div className="mx-auto max-w-7xl">
-        <h1 className="mb-2 text-4xl font-bold text-[#c98f3b]">
+        <h1 className="mb-2 text-4xl font-bold text-[var(--arydia-primary)]">
           Arydia Glossary
         </h1>
 
-        <p className="mb-6 text-sm text-[#b9a988]">
+        <p className="mb-6 text-sm text-[var(--arydia-muted)]">
           English / 繁體中文 terminology reference for consistent Arydia
           translation.
         </p>

@@ -5,8 +5,8 @@ type StatusBadgeProps = {
 };
 
 const statusStyles: Record<TranslationStatus, string> = {
-  draft: "border-[#8a4a3a]/60 bg-[#8a4a3a]/20 text-[#e0b8a8]",
-  reviewed: "border-[#a9762f]/60 bg-[#a9762f]/20 text-[#c98f3b]",
+  draft: "border-[rgb(var(--arydia-danger-rgb)/0.6)] bg-[rgb(var(--arydia-danger-rgb)/0.2)] text-[var(--arydia-danger-text)]",
+  reviewed: "border-[rgb(var(--arydia-border-rgb)/0.6)] bg-[rgb(var(--arydia-border-rgb)/0.2)] text-[var(--arydia-primary)]",
   approved: "border-emerald-700/60 bg-emerald-900/30 text-emerald-200",
 };
 

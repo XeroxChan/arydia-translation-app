@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 const cards = [
   {
@@ -33,18 +33,18 @@ const cards = [
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#1c1a17] p-4 text-[#ece3d2] sm:p-6 lg:p-8">
+    <main className="min-h-screen bg-[var(--arydia-bg)] p-4 text-[var(--arydia-text)] sm:p-6 lg:p-8">
       <div className="mx-auto max-w-5xl">
-        <section className="mb-10 rounded-xl border border-[#a9762f]/50 bg-[#2a241d] p-6 shadow-lg">
-          <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+        <section className="mb-10 rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.5)] bg-[var(--arydia-surface)] p-6 shadow-lg">
+          <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             Arydia, the Paths We Dare Tread Bilingual Database
           </p>
 
-          <h1 className="mb-4 text-4xl font-bold text-[#c98f3b]">
+          <h1 className="mb-4 text-4xl font-bold text-[var(--arydia-primary)]">
             {"Arydia, the Paths We Dare Tread \u4e2d\u82f1\u8cc7\u6599\u5eab"}
           </h1>
 
-          <p className="max-w-3xl leading-7 text-[#b9a988]">
+          <p className="max-w-3xl leading-7 text-[var(--arydia-muted)]">
             A private iPad-friendly web app for displaying Arydia reference
             content in English and Traditional Chinese side by side, with a
             glossary-controlled translation workflow.
@@ -56,15 +56,15 @@ export default function HomePage() {
             <Link
               key={card.href}
               href={card.href}
-              className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-5 shadow-lg transition hover:border-[#c98f3b] hover:bg-[#3a2b1c]"
+              className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-5 shadow-lg transition hover:border-[var(--arydia-primary)] hover:bg-[var(--arydia-surface-raised)]"
             >
-              <p className="mb-2 text-sm text-[#b9a988]">{card.zh}</p>
+              <p className="mb-2 text-sm text-[var(--arydia-muted)]">{card.zh}</p>
 
-              <h2 className="mb-3 text-2xl font-bold text-[#c98f3b]">
+              <h2 className="mb-3 text-2xl font-bold text-[var(--arydia-primary)]">
                 {card.title}
               </h2>
 
-              <p className="leading-7 text-[#ece3d2]">{card.description}</p>
+              <p className="leading-7 text-[var(--arydia-text)]">{card.description}</p>
             </Link>
           ))}
         </section>

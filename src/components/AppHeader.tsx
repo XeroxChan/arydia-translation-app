@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -35,13 +35,13 @@ export default function AppHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-[#a9762f]/40 bg-[#1c1a17]/95 px-4 py-3 text-[#ece3d2] sm:px-6 lg:px-8">
+    <header className="border-b border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[rgb(var(--arydia-bg-rgb)/0.95)] px-4 py-3 text-[var(--arydia-text)] sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Link href="/" className="group">
-          <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+          <p className="text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             Arydia, the Paths We Dare Tread
           </p>
-          <h1 className="text-lg font-bold text-[#c98f3b] group-hover:text-[#ece3d2]">
+          <h1 className="text-lg font-bold text-[var(--arydia-primary)] group-hover:text-[var(--arydia-text)]">
             中英資料庫
           </h1>
         </Link>
@@ -57,8 +57,8 @@ export default function AppHeader() {
                 href={item.href}
                 className={`rounded-full border px-3 py-1.5 text-sm transition ${
                   isActive
-                    ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
-                    : "border-[#a9762f]/30 bg-[#2a241d] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                    ? "border-[var(--arydia-primary)] bg-[var(--arydia-surface-raised)] text-[var(--arydia-strong)]"
+                    : "border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-surface)] text-[var(--arydia-muted)] hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
                 }`}
               >
                 <span className="mr-1">{item.zh}</span>

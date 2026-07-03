@@ -24,6 +24,14 @@
   - Adjusted Previous / Next scrolling so it jumps to the rulebook content area instead of the very top of the page.
 - Fixed UI text encoding issues in public components where Traditional Chinese labels had become mojibake.
 - Fixed Previous / Next arrow rendering.
+- Improved the visual theme:
+  - Added Arydia-style theme variables in globals.css.
+  - Migrated hard-coded colours toward semantic CSS variables.
+  - Shifted the app toward a darker forest, aged bronze, parchment, and muted magic-teal palette.
+- Refined split-screen desktop layout:
+  - Changed the Rulebook page navigator to appear at medium-width screens instead of only large screens.
+  - Reduced the split-screen Rulebook sidebar width to 14rem while keeping the full desktop sidebar wider.
+- Cleaned up temporary backup files after confirming the app works.
 - Fixed iPad local-network use:
   - Confirmed the desktop can serve the private Rulebook JSON to iPad Safari over the local network.
   - Added/updated local dev origin settings so client-side buttons work from iPad.
@@ -51,6 +59,7 @@ Public-safe:
 - src/data/glossary.ts
 - next.config.ts / next.config.*
 - docs/devlog.md
+- src/app/globals.css
 
 ### Next steps
 

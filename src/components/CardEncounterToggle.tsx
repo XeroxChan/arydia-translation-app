@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 type CardEncounterToggleProps = {
   encountered: boolean;
@@ -16,8 +16,8 @@ export default function CardEncounterToggle({
       onClick={onToggle}
       className={`rounded-full border px-3 py-1.5 text-sm transition ${
         encountered
-          ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
-          : "border-[#a9762f]/30 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+          ? "border-[var(--arydia-primary)] bg-[var(--arydia-surface-raised)] text-[var(--arydia-strong)]"
+          : "border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-bg)] text-[var(--arydia-muted)] hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
       }`}
     >
       {encountered ? "Encountered 已遇到" : "Mark encountered 標記已遇到"}

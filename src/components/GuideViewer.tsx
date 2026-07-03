@@ -356,10 +356,10 @@ export default function GuideViewer({
 
   return (
     <div className="space-y-6">
-      <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+      <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
         <label
           htmlFor="guide-search"
-          className="mb-2 block text-xs uppercase tracking-[0.25em] text-[#b9a988]"
+          className="mb-2 block text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]"
         >
           Search Guide
         </label>
@@ -370,22 +370,22 @@ export default function GuideViewer({
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search English, Chinese, section titles..."
-          className="w-full rounded-md border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-[#ece3d2] placeholder:text-[#b9a988]/60 focus:border-[#c98f3b] focus:outline-none"
+          className="w-full rounded-md border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-4 py-2 text-[var(--arydia-text)] placeholder:text-[rgb(var(--arydia-muted-rgb)/0.6)] focus:border-[var(--arydia-primary)] focus:outline-none"
         />
       </section>
 
-      <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+      <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
         <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+            <p className="text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
               Review Summary
             </p>
-            <h2 className="mt-1 text-xl font-semibold text-[#fff6df]">
+            <h2 className="mt-1 text-xl font-semibold text-[var(--arydia-strong)]">
               Translation progress
             </h2>
           </div>
 
-          <p className="text-sm text-[#b9a988]">
+          <p className="text-sm text-[var(--arydia-muted)]">
             {statusSummary.draft +
               statusSummary.reviewed +
               statusSummary.approved}{" "}
@@ -397,13 +397,13 @@ export default function GuideViewer({
           {statusSummaryOptions.map((option) => (
             <div
               key={option.value}
-              className="rounded-lg border border-[#a9762f]/30 bg-[#1c1a17] p-4"
+              className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-bg)] p-4"
             >
-              <p className="text-sm text-[#b9a988]">{option.label}</p>
-              <p className="mt-2 text-3xl font-semibold text-[#c98f3b]">
+              <p className="text-sm text-[var(--arydia-muted)]">{option.label}</p>
+              <p className="mt-2 text-3xl font-semibold text-[var(--arydia-primary)]">
                 {statusSummary[option.value]}
               </p>
-              <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#b9a988]/70">
+              <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[rgb(var(--arydia-muted-rgb)/0.7)]">
                 {option.helper}
               </p>
             </div>
@@ -412,8 +412,8 @@ export default function GuideViewer({
       </section>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg lg:col-span-2">
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+        <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg lg:col-span-2">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             Translation Status Filter
           </p>
 
@@ -428,8 +428,8 @@ export default function GuideViewer({
                   onClick={() => setActiveStatus(option.value)}
                   className={`rounded-full border px-3 py-1.5 text-sm transition ${
                     isActive
-                      ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
-                      : "border-[#a9762f]/30 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                      ? "border-[var(--arydia-primary)] bg-[var(--arydia-surface-raised)] text-[var(--arydia-strong)]"
+                      : "border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-bg)] text-[var(--arydia-muted)] hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
                   }`}
                 >
                   {option.label}
@@ -438,14 +438,14 @@ export default function GuideViewer({
             })}
           </div>
 
-          <p className="mt-4 text-sm text-[#b9a988]">
+          <p className="mt-4 text-sm text-[var(--arydia-muted)]">
             {filteredSections.length} of {sections.length} sections match the
             current filters.
           </p>
         </section>
 
-        <section className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+        <section className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
             Display Mode
           </p>
 
@@ -460,8 +460,8 @@ export default function GuideViewer({
                   onClick={() => setDisplayMode(option.value)}
                   className={`rounded-full border px-3 py-1.5 text-sm transition ${
                     isActive
-                      ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
-                      : "border-[#a9762f]/30 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                      ? "border-[var(--arydia-primary)] bg-[var(--arydia-surface-raised)] text-[var(--arydia-strong)]"
+                      : "border-[rgb(var(--arydia-border-rgb)/0.3)] bg-[var(--arydia-bg)] text-[var(--arydia-muted)] hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
                   }`}
                 >
                   {option.label}
@@ -472,15 +472,15 @@ export default function GuideViewer({
         </section>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[20rem_minmax(0,1fr)]">
-        <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="hidden rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg lg:block">
+      <div className="grid gap-6 md:grid-cols-[14rem_minmax(0,1fr)] xl:grid-cols-[20rem_minmax(0,1fr)]">
+        <aside className="md:sticky md:top-24 md:self-start">
+          <div className="hidden rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg md:block">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+                <p className="text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
                   Contents
                 </p>
-                <h2 className="mt-1 text-lg font-semibold text-[#fff6df]">
+                <h2 className="mt-1 text-lg font-semibold text-[var(--arydia-strong)]">
                   Page navigator
                 </h2>
               </div>
@@ -488,7 +488,7 @@ export default function GuideViewer({
               <a
                 href={showAllPages ? singlePageHref : showAllHref}
                 onClick={toggleShowAllPages}
-                className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-3 py-1 text-xs text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-3 py-1 text-xs text-[var(--arydia-muted)] transition hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
               >
                 {showAllPages ? "Single page" : "Show all"}
               </a>
@@ -507,32 +507,32 @@ export default function GuideViewer({
                       onClick={(event) => selectSection(event, section)}
                       className={`block w-full rounded-lg border px-3 py-2 text-left text-sm transition ${
                         isActive
-                          ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
-                          : "border-[#a9762f]/25 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                          ? "border-[var(--arydia-primary)] bg-[var(--arydia-surface-raised)] text-[var(--arydia-strong)]"
+                          : "border-[rgb(var(--arydia-border-rgb)/0.25)] bg-[var(--arydia-bg)] text-[var(--arydia-muted)] hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
                       }`}
                     >
-                      <span className="block text-xs uppercase tracking-[0.16em] text-[#c98f3b]">
+                      <span className="block text-xs uppercase tracking-[0.16em] text-[var(--arydia-primary)]">
                         Page {section.page ?? "?"}
                       </span>
-                      <span className="mt-1 block font-medium text-[#fff6df]">
+                      <span className="mt-1 block font-medium text-[var(--arydia-strong)]">
                         {section.titleZh}
                       </span>
-                      <span className="mt-0.5 block text-xs text-[#b9a988]">
+                      <span className="mt-0.5 block text-xs text-[var(--arydia-muted)]">
                         {section.titleEn}
                       </span>
                     </a>
                   );
                 })
               ) : (
-                <p className="rounded-lg border border-[#a9762f]/25 bg-[#1c1a17] p-3 text-sm text-[#b9a988]">
+                <p className="rounded-lg border border-[rgb(var(--arydia-border-rgb)/0.25)] bg-[var(--arydia-bg)] p-3 text-sm text-[var(--arydia-muted)]">
                   No pages match the current filters.
                 </p>
               )}
             </div>
           </div>
 
-          <details className="sticky top-20 z-20 rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg lg:hidden">
-            <summary className="cursor-pointer text-xs uppercase tracking-[0.25em] text-[#b9a988]">
+          <details className="sticky top-20 z-20 rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg md:hidden">
+            <summary className="cursor-pointer text-xs uppercase tracking-[0.25em] text-[var(--arydia-muted)]">
               Jump to page
             </summary>
 
@@ -548,8 +548,8 @@ export default function GuideViewer({
                     onClick={(event) => selectSection(event, section)}
                     className={`block rounded-lg border px-3 py-2 text-sm transition ${
                       isActive
-                        ? "border-[#c98f3b] bg-[#3a2b1c] text-[#fff6df]"
-                        : "border-[#a9762f]/25 bg-[#1c1a17] text-[#b9a988] hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                        ? "border-[var(--arydia-primary)] bg-[var(--arydia-surface-raised)] text-[var(--arydia-strong)]"
+                        : "border-[rgb(var(--arydia-border-rgb)/0.25)] bg-[var(--arydia-bg)] text-[var(--arydia-muted)] hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
                     }`}
                   >
                     {getSectionLabel(section)}
@@ -561,7 +561,7 @@ export default function GuideViewer({
             <a
               href={showAllPages ? singlePageHref : showAllHref}
               onClick={toggleShowAllPages}
-              className="mt-3 block rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-3 py-2 text-center text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+              className="mt-3 block rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-3 py-2 text-center text-sm text-[var(--arydia-muted)] transition hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
             >
               {showAllPages ? "Single page mode" : "Show all pages"}
             </a>
@@ -570,23 +570,23 @@ export default function GuideViewer({
 
         <main className="min-w-0 space-y-4">
           {!showAllPages && selectedSection ? (
-            <div className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+            <div className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 {previousSection ? (
                   <a
                     href={getSectionHref(basePath, previousSection)}
                     onClick={(event) => selectSection(event, previousSection)}
-                    className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                    className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-4 py-2 text-center text-sm text-[var(--arydia-muted)] transition hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
                   >
                     &larr; Previous
                   </a>
                 ) : (
-                  <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] opacity-40">
+                  <span className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-4 py-2 text-center text-sm text-[var(--arydia-muted)] opacity-40">
                     &larr; Previous
                   </span>
                 )}
 
-                <p className="text-center text-sm text-[#b9a988]">
+                <p className="text-center text-sm text-[var(--arydia-muted)]">
                   Page {selectedSection.page ?? "?"} of{" "}
                   {filteredSections.length > 0
                     ? filteredSections[filteredSections.length - 1].page
@@ -597,12 +597,12 @@ export default function GuideViewer({
                   <a
                     href={getSectionHref(basePath, nextSection)}
                     onClick={(event) => selectSection(event, nextSection)}
-                    className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                    className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-4 py-2 text-center text-sm text-[var(--arydia-muted)] transition hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
                   >
                     Next &rarr;
                   </a>
                 ) : (
-                  <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] opacity-40">
+                  <span className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-4 py-2 text-center text-sm text-[var(--arydia-muted)] opacity-40">
                     Next &rarr;
                   </span>
                 )}
@@ -612,7 +612,7 @@ export default function GuideViewer({
 
           <div
             id="guide-reader-content"
-            className="scroll-mt-24 rounded-xl border border-[#a9762f]/50 bg-[#2a241d] p-5 shadow-lg"
+            className="scroll-mt-24 rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.5)] bg-[var(--arydia-surface)] p-5 shadow-lg"
           >
             {contentSections.length > 0 ? (
               contentSections.map((section) => (
@@ -624,14 +624,14 @@ export default function GuideViewer({
               ))
             ) : (
               <div className="space-y-4 text-center">
-                <p className="text-[#b9a988]">
+                <p className="text-[var(--arydia-muted)]">
                   No guide content matches your current search or status filter.
                 </p>
 
                 <button
                   type="button"
                   onClick={clearSearchAndFilters}
-                  className="rounded-full border border-[#c98f3b] bg-[#3a2b1c] px-4 py-2 text-sm text-[#fff6df] transition hover:bg-[#4a3825]"
+                  className="rounded-full border border-[var(--arydia-primary)] bg-[var(--arydia-surface-raised)] px-4 py-2 text-sm text-[var(--arydia-strong)] transition hover:bg-[var(--arydia-surface-hover)]"
                 >
                   Clear search and filters
                 </button>
@@ -640,18 +640,18 @@ export default function GuideViewer({
           </div>
 
           {!showAllPages && selectedSection ? (
-            <div className="rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
+            <div className="rounded-xl border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-surface)] p-4 shadow-lg">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 {previousSection ? (
                   <a
                     href={getSectionHref(basePath, previousSection)}
                     onClick={(event) => selectSection(event, previousSection)}
-                    className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                    className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-4 py-2 text-center text-sm text-[var(--arydia-muted)] transition hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
                   >
                     &larr; Previous
                   </a>
                 ) : (
-                  <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] opacity-40">
+                  <span className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-4 py-2 text-center text-sm text-[var(--arydia-muted)] opacity-40">
                     &larr; Previous
                   </span>
                 )}
@@ -660,12 +660,12 @@ export default function GuideViewer({
                   <a
                     href={getSectionHref(basePath, nextSection)}
                     onClick={(event) => selectSection(event, nextSection)}
-                    className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
+                    className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-4 py-2 text-center text-sm text-[var(--arydia-muted)] transition hover:border-[var(--arydia-primary)] hover:text-[var(--arydia-text)]"
                   >
                     Next &rarr;
                   </a>
                 ) : (
-                  <span className="rounded-full border border-[#a9762f]/40 bg-[#1c1a17] px-4 py-2 text-center text-sm text-[#b9a988] opacity-40">
+                  <span className="rounded-full border border-[rgb(var(--arydia-border-rgb)/0.4)] bg-[var(--arydia-bg)] px-4 py-2 text-center text-sm text-[var(--arydia-muted)] opacity-40">
                     Next &rarr;
                   </span>
                 )}
