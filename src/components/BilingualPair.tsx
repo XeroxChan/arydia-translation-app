@@ -8,6 +8,8 @@ type BilingualPairProps = {
   zh: string;
   status: TranslationStatus;
   displayMode: DisplayMode;
+  subtitleEn?: string;
+  subtitleZh?: string;
 };
 
 export default function BilingualPair({
@@ -15,6 +17,8 @@ export default function BilingualPair({
   zh,
   status,
   displayMode,
+  subtitleEn,
+  subtitleZh,
 }: BilingualPairProps) {
   if (displayMode === "zh-only") {
     return (
@@ -26,7 +30,15 @@ export default function BilingualPair({
           <StatusBadge status={status} />
         </div>
 
-        <p className="text-lg leading-8 text-[#fff6df]">{zh}</p>
+        {subtitleZh ? (
+          <p className="mb-2 text-xl font-bold leading-8 text-[#fff6df]">
+            {subtitleZh}
+          </p>
+        ) : null}
+
+        <p className="whitespace-pre-line text-lg leading-8 text-[#fff6df]">
+          {zh}
+        </p>
       </div>
     );
   }
@@ -41,7 +53,13 @@ export default function BilingualPair({
           <StatusBadge status={status} />
         </div>
 
-        <p className="leading-7 text-[#ece3d2]">{en}</p>
+        {subtitleEn ? (
+          <p className="mb-2 text-lg font-bold leading-7 text-[#fff1cf]">
+            {subtitleEn}
+          </p>
+        ) : null}
+
+        <p className="whitespace-pre-line leading-7 text-[#ece3d2]">{en}</p>
       </div>
     );
   }
@@ -56,7 +74,13 @@ export default function BilingualPair({
           <StatusBadge status={status} />
         </div>
 
-        <p className="leading-7 text-[#ece3d2]">{en}</p>
+        {subtitleEn ? (
+          <p className="mb-2 text-lg font-bold leading-7 text-[#fff1cf]">
+            {subtitleEn}
+          </p>
+        ) : null}
+
+        <p className="whitespace-pre-line leading-7 text-[#ece3d2]">{en}</p>
       </div>
 
       <div className="rounded-lg border border-[#c98f3b]/50 bg-[#3a2b1c]/70 p-4">
@@ -67,7 +91,15 @@ export default function BilingualPair({
           <StatusBadge status={status} />
         </div>
 
-        <p className="text-lg leading-8 text-[#fff6df]">{zh}</p>
+        {subtitleZh ? (
+          <p className="mb-2 text-xl font-bold leading-8 text-[#fff6df]">
+            {subtitleZh}
+          </p>
+        ) : null}
+
+        <p className="whitespace-pre-line text-lg leading-8 text-[#fff6df]">
+          {zh}
+        </p>
       </div>
     </div>
   );

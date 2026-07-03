@@ -11,6 +11,8 @@ export type GuideBlock =
   | {
       id: string;
       type: "paragraph";
+      subtitleEn?: string;
+      subtitleZh?: string;
       en: string;
       zh: string;
       status: TranslationStatus;
@@ -24,7 +26,6 @@ export type GuideBlock =
 export type GuideSection = {
   id: string;
   page: number;
-  order?: number;
   titleEn: string;
   titleZh: string;
   blocks: GuideBlock[];

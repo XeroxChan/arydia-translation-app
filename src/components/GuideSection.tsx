@@ -30,6 +30,8 @@ export default function GuideSection({
                 zh={block.zh}
                 status={block.status}
                 displayMode={displayMode}
+                subtitleEn={block.subtitleEn}
+                subtitleZh={block.subtitleZh}
               />
             );
           }
