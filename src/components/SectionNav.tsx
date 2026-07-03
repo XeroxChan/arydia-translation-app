@@ -4,6 +4,10 @@ type SectionNavProps = {
   sections: GuideSection[];
 };
 
+function getPageLabel(section: GuideSection) {
+  return typeof section.page === "number" ? `Page ${section.page}` : "Page ?";
+}
+
 export default function SectionNav({ sections }: SectionNavProps) {
   return (
     <nav className="mb-8 rounded-xl border border-[#a9762f]/40 bg-[#2a241d] p-4 shadow-lg">
@@ -19,7 +23,10 @@ export default function SectionNav({ sections }: SectionNavProps) {
             className="rounded-full border border-[#a9762f]/30 bg-[#1c1a17] px-3 py-1.5 text-sm text-[#b9a988] transition hover:border-[#c98f3b] hover:text-[#ece3d2]"
           >
             <span className="mr-1 text-[#c98f3b]">{section.titleZh}</span>
-            <span className="text-xs opacity-75">{section.titleEn}</span>
+            <span className="mr-1 text-xs opacity-75">{section.titleEn}</span>
+            <span className="text-xs text-[#b9a988]/70">
+              ({getPageLabel(section)})
+            </span>
           </a>
         ))}
       </div>

@@ -24,6 +24,7 @@ export type GuideBlock =
 export type GuideSection = {
   id: string;
   page: number;
+  order?: number;
   titleEn: string;
   titleZh: string;
   blocks: GuideBlock[];
